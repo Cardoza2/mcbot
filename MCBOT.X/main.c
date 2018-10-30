@@ -7,21 +7,24 @@
  * Globals:
  * 
  * Functions:
- *  Forward() - Drive forward some distance
- *      Input is in inches
- *  Reverse() - Drive backwards some distance
- *      Input is in inches
+ *  Forward() - Drive forward until interruption
+ *  Reverse() - Drive backwards until interruption 
  *  Right() - Turn right. 
  *      Input is in degrees.
- *  Left()???
+ *  Left()
  *  Dump()
+ *  Sort()
+ *  Trigger()
  *  
  * 
  * States:
  * 
  * 
  * Interrupts:
- * 
+ *  Timer1 - Main timer that keeps track of the parts of the round
+ *  Front_Bumpers
+ *  Back_Bumpers
+ *  IR_Sensor
  * 
  */
 
