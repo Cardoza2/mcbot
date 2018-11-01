@@ -1,13 +1,6 @@
 /*
  * File:   config.c
- * Author: jonah
+ * Author: MCBOT Team
  *
  * Created on November 1, 2018, 3:58 PM
  */
-
-
-#include "xc.h"
-
-int main(void) {
-    return 0;
-}
