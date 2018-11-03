@@ -29,7 +29,7 @@ void config_PWM_1() {
     OC1CON2 = 0;
    
     // Set period and duty cycle
-    OC1R = 3999;                // Set Output Compare value to achieve
+    OC1R = 3000;                // Set Output Compare value to achieve
                                 // desired duty cycle. This is the number
                                 // of timer counts when the OC should send
                                 // the PWM signal low. The duty cycle as a
@@ -62,30 +62,29 @@ void config_PWM_1() {
 
 void driveForward() {
     _LATB8 = 1;
-    _LATB13 = 1;
+    _LATB13 = 0;
 }
 
 void turnRight() {
     _LATB8 = 1;
-    _LATB13 = 0;
+    _LATB13 = 1;
 }
 
 int main() {
     
     _TRISB8 = 0;
     _TRISB13 = 0;
-    //ANSB8 = 0;
-    //_ANSB13 = 0;
+     _ANSB13 = 0;
    
     config_PWM_1();
     
     _OC1IE = 1; //ENABLES YOUR INTERRUPT
     
     while(1) {
-        if (counter <= 100) {
+        if (counter <= 1000) {
             driveForward();
         }
-        else if (counter <= 150) {
+        else if (counter <= 1217) {
             turnRight();
         }
         else {
