@@ -7,6 +7,7 @@
  * This file is for testing functions before adding them to the project
  */
 
+#pragma config FNOSC = FRCDIV
 #include "xc.h"
 
 #define pin12 = _RB8
@@ -29,12 +30,12 @@ void config_PWM_1() {
     OC1CON2 = 0;
    
     // Set period and duty cycle
-    OC1R = 3000;                // Set Output Compare value to achieve
+    OC1R = 8;                // Set Output Compare value to achieve
                                 // desired duty cycle. This is the number
                                 // of timer counts when the OC should send
                                 // the PWM signal low. The duty cycle as a
                                 // fraction is OC1R/OC1RS.
-    OC1RS = 3999;               // Period of OC1 to achieve desired PWM 
+    OC1RS = 155;               // Period of OC1 to achieve desired PWM    //39999 should give 50Hz
                                 // frequency, FPWM. See Equation 15-1
                                 // in the datasheet. For example, for
                                 // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
@@ -42,7 +43,7 @@ void config_PWM_1() {
                                 // SYNCSEL bits are set to 0x1F (see FRM)
     
     // Configure OC1
-    OC1CON1bits.OCTSEL = 0b111; // System (peripheral) clock as timing source
+    OC1CON1bits.OCTSEL = 0b000; // System (peripheral) clock as timing source
     OC1CON2bits.SYNCSEL = 0x1F; // Select OC1 as synchronization source
                                 // (self synchronization) -- Although we
                                 // selected the system clock to determine
@@ -70,26 +71,78 @@ void turnRight() {
     _LATB13 = 1;
 }
 
+// Timer1 ISR -- This is the function that is automatically
+// called each time the timer reaches the value specified
+// in the register PR1. When that value is reached, the timer
+// interrupt flag (T1IF) is set to 1, the while(1) loop in the
+// main() function pauses, and the program branches to
+// this function.
+void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
+    // Clear Timer1 interrupt flag so that the program doesn't
+    // just jump back to this function when it returns to the
+    // while(1) loop.
+    _T1IF = 0;
+
+    TMR1 = 0;
+    
+    //A pwm period of 39999 is 50 MHz or 20 ms.
+    //the servo goes from 0 to 180 degrees through
+    //1 to 2 ms period.  This is a duty cycle of
+    //2000 to 4000
+    if (OC1R <= 8) { 
+        OC1R = 16;
+    }
+    else {
+        OC1R = 8;
+    }
+    
+    if (_RB8 == 0) {
+        _RB8 = 1;
+    }
+    else {
+        _RB8 = 0;
+    }
+    
+}
+
+void configTimer2() {
+    
+    T2CONbits.TON = 1;      // turn on Timer1
+    T2CONbits.TCS = 0;      // INTERNAL CLOCK
+    T2CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
+    PR2 = 1000;      // TIMER PERIOD OF 155 is 50 Hz
+    TMR2 = 0;     // RESET TIMER1 TO ZERO
+    
+}
+
+void configTimer1() {
+    
+    T1CONbits.TON = 1;      // turn on Timer1
+    T1CONbits.TCS = 0;      // INTERNAL CLOCK
+    T1CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
+    PR1 = 15625;      // TIMER PERIOD OF 15625 is 2 seconds with the 2 MHz oscillator and 256 prescaler
+    TMR1 = 0;     // RESET TIMER1 TO ZERO
+    
+    // Configure Timer1 interrupt
+    _T1IP = 4;          // Select Timer1 interrupt priority
+    _T1IE = 1;          // Enable Timer1 interrupt
+    _T1IF = 0;          // Clear Timer1 interrupt flag
+}
+
 int main() {
-    
     _TRISB8 = 0;
-    _TRISB13 = 0;
-     _ANSB13 = 0;
-   
-    config_PWM_1();
     
-    _OC1IE = 1; //ENABLES YOUR INTERRUPT
+    _RCDIV = 0b010;   //Configures postscaler on oscillator to Fcy = 2 MHz
+    
+    
+    config_PWM_1();
+    configTimer1();
+    
+    
+    _RB8 = 1;
     
     while(1) {
-        if (counter <= 1000) {
-            driveForward();
-        }
-        else if (counter <= 1217) {
-            turnRight();
-        }
-        else {
-            counter = 0;
-        }
+        
     }
     
     return 0;
