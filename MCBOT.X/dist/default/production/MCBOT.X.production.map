@@ -59,10 +59,10 @@ xc16-ld 1.35 (A)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x116           0x1a1  (417)
-.text                        0x316                0x94            0xde  (222)
-.dinit                       0x3aa                 0x8             0xc  (12)
+.text                        0x316                0x96            0xe1  (225)
+.dinit                       0x3ac                 0x8             0xc  (12)
 
-                 Total "program" memory used (bytes):          0x28b  (651) 4%
+                 Total "program" memory used (bytes):          0x28e  (654) 4%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -237,9 +237,9 @@ __FDS
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x10f build/default/production/testing.o
 
-.debug_line       0x000000        0x133
+.debug_line       0x000000        0x134
  *(.debug_line)
- .debug_line      0x000000        0x133 build/default/production/testing.o
+ .debug_line      0x000000        0x134 build/default/production/testing.o
 
 .debug_frame      0x000000        0x10a
  *(.debug_frame)
@@ -917,8 +917,8 @@ __c30_signature
  .ivt._T1Interrupt
                   0x00001a          0x2 build/default/production/testing.o
 
-.text             0x000316         0x94
- .text            0x000316         0x94 build/default/production/testing.o
+.text             0x000316         0x96
+ .text            0x000316         0x96 build/default/production/testing.o
                   0x000316                  _config_PWM_1
                   0x000342                  _driveForward
                   0x00034c                  _turnRight
@@ -926,5 +926,5 @@ __c30_signature
                   0x00036e                  _configTimer1
                   0x000394                  _main
 
-.dinit            0x0003aa          0x8
- .dinit           0x0003aa          0x8 data_init
+.dinit            0x0003ac          0x8
+ .dinit           0x0003ac          0x8 data_init

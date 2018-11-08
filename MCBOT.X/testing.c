@@ -30,12 +30,12 @@ void config_PWM_1() {
     OC1CON2 = 0;
    
     // Set period and duty cycle
-    OC1R = 8;                // Set Output Compare value to achieve
+    OC1R = 1;                // Set Output Compare value to achieve
                                 // desired duty cycle. This is the number
                                 // of timer counts when the OC should send
                                 // the PWM signal low. The duty cycle as a
                                 // fraction is OC1R/OC1RS.
-    OC1RS = 155;               // Period of OC1 to achieve desired PWM    //39999 should give 50Hz
+    OC1RS = 78;               // Period of OC1 to achieve desired PWM    //39999 should give 50Hz
                                 // frequency, FPWM. See Equation 15-1
                                 // in the datasheet. For example, for
                                 // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
@@ -89,11 +89,11 @@ void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
     //the servo goes from 0 to 180 degrees through
     //1 to 2 ms period.  This is a duty cycle of
     //2000 to 4000
-    if (OC1R <= 8) { 
-        OC1R = 16;
+    if (OC1R <= 1) { 
+        OC1R = 8;
     }
     else {
-        OC1R = 8;
+        OC1R = 1;
     }
     
     if (_RB8 == 0) {
@@ -137,7 +137,7 @@ int main() {
     
     config_PWM_1();
     configTimer1();
-    
+    configTimer2();
     
     _RB8 = 1;
     
