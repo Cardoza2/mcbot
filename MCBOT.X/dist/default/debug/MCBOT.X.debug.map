@@ -4,9 +4,14 @@ Tool Name:
   g:\program files (x86)\microchip\xc16\v1.35\bin\bin\..\bin/elf-ld.exe
 
 Command:
+  -TC:\\Users\\jonah\\AppData\\Local\\Temp\\tmp000042fc.00 \
+  -TC:\\Users\\jonah\\AppData\\Local\\Temp\\tmp000042fc.01 \
+  -TC:\\Users\\jonah\\AppData\\Local\\Temp\\tmp000042fc.02 \
+  -TC:\\Users\\jonah\\AppData\\Local\\Temp\\tmp000042fc.03 \
+  -TC:\\Users\\jonah\\AppData\\Local\\Temp\\tmp000042fc.04 \
   -p24F16KA301 \
   -o \
-  dist/default/production/MCBOT.X.production.elf \
+  dist/default/debug/MCBOT.X.debug.elf \
   -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/.. \
   -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib \
   -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/PIC24E/gld \
@@ -16,9 +21,12 @@ Command:
   -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33C/gld \
   -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33E/gld \
   -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33F/gld \
-  build/default/production/testing.o \
+  build/default/debug/testing.o \
   --defsym=__MPLAB_BUILD=1 \
-  -Tp24F16KA301.gld.00 \
+  --defsym=__MPLAB_DEBUG=1 \
+  --defsym=__DEBUG=1 \
+  --defsym=__MPLAB_DEBUGGER_PK3=1 \
+  -Tp24F16KA301.gld.05 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -30,10 +38,10 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/production/MCBOT.X.production.map \
+  -Map=dist/default/debug/MCBOT.X.debug.map \
   --report-mem \
   --memorysummary \
-  dist/default/production/memoryfile.xml \
+  dist/default/debug/memoryfile.xml \
   -start-group \
   --library=lega-pic30-elf \
   --library=m-elf \
@@ -59,19 +67,24 @@ xc16-ld 1.35 (A)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x116           0x1a1  (417)
-.text                        0x316                0x92            0xdb  (219)
-.dinit                       0x3a8                 0x8             0xc  (12)
+.text                        0x316                0x90            0xd8  (216)
+.dinit                       0x3a6                 0x8             0xc  (12)
 
-                 Total "program" memory used (bytes):          0x288  (648) 4%
+                 Total "program" memory used (bytes):          0x285  (645) 3%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0x2  (2)
+reserve_data_0x800           0x800                0x20            0x20  (32)
+reserve_data_0x820           0x820                 0x2             0x2  (2)
+reserve_data_0x822           0x822                 0x2             0x2  (2)
+reserve_data_0x824           0x824                 0x2             0x2  (2)
+reserve_data_0x826           0x826                0x2a            0x2a  (42)
+.nbss                        0x850                   0             0x2  (2)
 
-                 Total "data" memory used (bytes):            0x2  (2) <1%
+                 Total "data" memory used (bytes):           0x52  (82) 4%
 
 
 Dynamic Memory Usage
@@ -79,18 +92,18 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x802                               0x7fe  (2046)
+stack                        0x852                               0x7ae  (1966)
 
-                 Maximum dynamic memory (bytes):          0x7fe  (2046)
+                 Maximum dynamic memory (bytes):          0x7ae  (1966)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _counter
+                    0x0850                  _counter
 
 External Symbols in Data Memory (by name):
 
-                    0x0800                  _counter
+                    0x0850                  _counter
 
 External Symbols in Program Memory (by address):
 
@@ -144,8 +157,36 @@ FDS              0xf80010           0x000002
 
 Linker script and memory map
 
-LOAD build/default/production/testing.o
+
+reserve_data_0x800
+                    0x0800         0x20
+                    0x0820                  . = 0x20
+ *fill*             0x0800         0x2000
+
+reserve_data_0x820
+                    0x0820          0x2
+                    0x0822                  . = 0x2
+ *fill*             0x0820          0x200
+
+reserve_data_0x822
+                    0x0822          0x2
+                    0x0824                  . = 0x2
+ *fill*             0x0822          0x200
+
+reserve_data_0x824
+                    0x0824          0x2
+                    0x0826                  . = 0x2
+ *fill*             0x0824          0x200
+
+reserve_data_0x826
+                    0x0826         0x2a
+                    0x0850                  . = 0x2a
+ *fill*             0x0826         0x2a00
+LOAD build/default/debug/testing.o
                     0x0001                  __MPLAB_BUILD = 0x1
+                    0x0001                  __MPLAB_DEBUG = 0x1
+                    0x0001                  __DEBUG = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_PK3 = 0x1
 LOAD pPIC24Fxxx
 LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
                     0xf80000                  __FBS = 0xf80000
@@ -182,7 +223,7 @@ LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002c8         0x48 build/default/production/testing.o
+ .isr.text        0x0002c8         0x48 build/default/debug/testing.o
                   0x0002c8                  __OC1Interrupt
                   0x0002e2                  __T1Interrupt
  .isr             0x000310          0x4 default_isr
@@ -226,26 +267,26 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x127c
+.debug_info       0x000000       0x1190
  *(.debug_info)
- .debug_info      0x000000       0x127c build/default/production/testing.o
+ .debug_info      0x000000       0x1190 build/default/debug/testing.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x10f
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x10f build/default/production/testing.o
+ .debug_abbrev    0x000000        0x10f build/default/debug/testing.o
 
-.debug_line       0x000000        0x133
+.debug_line       0x000000        0x132
  *(.debug_line)
- .debug_line      0x000000        0x133 build/default/production/testing.o
+ .debug_line      0x000000        0x132 build/default/debug/testing.o
 
 .debug_frame      0x000000         0xee
  *(.debug_frame)
- .debug_frame     0x000000         0xee build/default/production/testing.o
+ .debug_frame     0x000000         0xee build/default/debug/testing.o
 
-.debug_str        0x000000         0x6d
+.debug_str        0x000000         0x64
  *(.debug_str)
- .debug_str       0x000000         0x6d build/default/production/testing.o
+ .debug_str       0x000000         0x64 build/default/debug/testing.o
 
 .debug_loc
  *(.debug_loc)
@@ -257,7 +298,7 @@ __FDS
                   0x000000         0x8b
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x8b build/default/production/testing.o
+                  0x000000         0x8b build/default/debug/testing.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -265,7 +306,7 @@ __FDS
 .debug_aranges    0x000000         0x18
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/production/testing.o
+                  0x000000         0x18 build/default/debug/testing.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -880,51 +921,51 @@ LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30
 LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libm-elf.a
 LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-c-elf.a
 END GROUP
-OUTPUT(dist/default/production/MCBOT.X.production.elf elf32-pic30)
+OUTPUT(dist/default/debug/MCBOT.X.debug.elf elf32-pic30)
 LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000018        0x172
+                  0x000018        0x155
  .debug_pubtypes
-                  0x000018        0x172 build/default/production/testing.o
+                  0x000018        0x155 build/default/debug/testing.o
 
 __c30_signature
-                  0x00018a         0x12
+                  0x00016d         0x12
  __c30_signature
-                  0x00018a          0x6 build/default/production/testing.o
+                  0x00016d          0x6 build/default/debug/testing.o
  __c30_signature
-                  0x000190          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x000173          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x000196          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x000179          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
 
-.nbss               0x0800          0x2
- .nbss              0x0800          0x2 build/default/production/testing.o
-                    0x0800                  _counter
+.nbss               0x0850          0x2
+ .nbss              0x0850          0x2 build/default/debug/testing.o
+                    0x0850                  _counter
 
 .config_ICS       0xf8000e          0x2
- .config_ICS      0xf8000e          0x2 build/default/production/testing.o
+ .config_ICS      0xf8000e          0x2 build/default/debug/testing.o
 
 .config_IESO      0xf80006          0x2
- .config_IESO     0xf80006          0x2 build/default/production/testing.o
+ .config_IESO     0xf80006          0x2 build/default/debug/testing.o
 
 .ivt._OC1Interrupt
                   0x000018          0x2
  .ivt._OC1Interrupt
-                  0x000018          0x2 build/default/production/testing.o
+                  0x000018          0x2 build/default/debug/testing.o
 
 .ivt._T1Interrupt
                   0x00001a          0x2
  .ivt._T1Interrupt
-                  0x00001a          0x2 build/default/production/testing.o
+                  0x00001a          0x2 build/default/debug/testing.o
 
-.text             0x000316         0x92
- .text            0x000316         0x92 build/default/production/testing.o
+.text             0x000316         0x90
+ .text            0x000316         0x90 build/default/debug/testing.o
                   0x000316                  _config_PWM_1
                   0x000344                  _configTimer2
                   0x00035c                  _configTimer1
                   0x000382                  _raiseLift
                   0x000388                  _main
 
-.dinit            0x0003a8          0x8
- .dinit           0x0003a8          0x8 data_init
+.dinit            0x0003a6          0x8
+ .dinit           0x0003a6          0x8 data_init

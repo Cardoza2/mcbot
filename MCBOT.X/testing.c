@@ -7,7 +7,8 @@
  * This file is for testing functions before adding them to the project
  */
 
-#pragma config FNOSC = FRCDIV
+#pragma config FNOSC = FRC
+#pragma config ICS = PGx3
 #include "xc.h"
 
 #define pin12 = _RB8
@@ -18,6 +19,9 @@ int counter = 0;
 void _ISR _OC1Interrupt(void)
 {
     counter++;
+//    if(counter > 5){
+//        _LATB13 = 0;
+//    }
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
 }
 
@@ -30,12 +34,12 @@ void config_PWM_1() {
     OC1CON2 = 0;
    
     // Set period and duty cycle
-    OC1R = 1;                // Set Output Compare value to achieve
+    OC1R = 3990;                // Set Output Compare value to achieve
                                 // desired duty cycle. This is the number
                                 // of timer counts when the OC should send
                                 // the PWM signal low. The duty cycle as a
                                 // fraction is OC1R/OC1RS.
-    OC1RS = 78;               // Period of OC1 to achieve desired PWM    //39999 should give 50Hz
+    OC1RS = 15000;               // Period of OC1 to achieve desired PWM    //39999 should give 50Hz
                                 // frequency, FPWM. See Equation 15-1
                                 // in the datasheet. For example, for
                                 // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
@@ -43,7 +47,7 @@ void config_PWM_1() {
                                 // SYNCSEL bits are set to 0x1F (see FRM)
     
     // Configure OC1
-    OC1CON1bits.OCTSEL = 0b000; // System (peripheral) clock as timing source
+    OC1CON1bits.OCTSEL = 0b111; // System (peripheral) clock as timing source
     OC1CON2bits.SYNCSEL = 0x1F; // Select OC1 as synchronization source
                                 // (self synchronization) -- Although we
                                 // selected the system clock to determine
@@ -59,17 +63,11 @@ void config_PWM_1() {
                                 // triggering with the OC1 source
     OC1CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
     
+    _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+
 }
 
-void driveForward() {
-    _LATB8 = 1;
-    _LATB13 = 0;
-}
 
-void turnRight() {
-    _LATB8 = 1;
-    _LATB13 = 1;
-}
 
 // Timer1 ISR -- This is the function that is automatically
 // called each time the timer reaches the value specified
@@ -129,21 +127,29 @@ void configTimer1() {
     _T1IF = 0;          // Clear Timer1 interrupt flag
 }
 
+void raiseLift() {
+    
+}
+
 int main() {
     _TRISB8 = 0;
+    _TRISB13 = 0;
+    _ANSB13 = 0;
     
-    _RCDIV = 0b010;   //Configures postscaler on oscillator to Fcy = 2 MHz
+    //_RCDIV = 0b010;   //Configures postscaler on oscillator to Fcy = 2 MHz
     
-    
+    _OC1IE = 1;     //Enables the Interrupt
     config_PWM_1();
-    configTimer1();
-    configTimer2();
+    //configTimer1();
+    //configTimer2();
     
-    _RB8 = 1;
+    _LATB8 = 0;
+    _LATB13 = 1;
     
-    while(1) {
+    
+    while(counter < 5) {
         
     }
-    
+    _LATB13 = 0;
     return 0;
 }

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/MCBOT.X.production.elf">
+  <executable name="dist/default/debug/MCBOT.X.debug.elf">
     <memory name="data">
       <units>bytes</units>
       <length>2048</length>
-      <used>2</used>
-      <free>2046</free>
+      <used>82</used>
+      <free>1966</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>16128</length>
-      <used>648</used>
-      <free>15480</free>
+      <used>645</used>
+      <free>15483</free>
     </memory>
   </executable>
 </project>
