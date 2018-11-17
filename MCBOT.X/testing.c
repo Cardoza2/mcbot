@@ -29,8 +29,12 @@ void configPins() {
     _TRISB13 = 0;       //Rear bumpers pin 16
     _ANSB13 = 0;        //disable analog
     _TRISB12 = 1;       //Front Bumpers pin 15
+<<<<<<< HEAD
     _ANSB12 = 0;        // disable analog
     _TRISA3 = 1;        //Pin 8 An14 IR sensor
+=======
+    _TRISA3 = 1;    
+>>>>>>> 1bb70c1134307f44efe3a1357898c05cfe5de885
     _ANSA3 = 1;        //IR sensor pin 8
 }
 
