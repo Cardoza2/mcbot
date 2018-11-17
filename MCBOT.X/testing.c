@@ -19,9 +19,7 @@ int counter = 0;
 void _ISR _OC1Interrupt(void)
 {
     counter++;
-//    if(counter > 5){
-//        _LATB13 = 0;
-//    }
+   
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
 }
 
@@ -67,67 +65,56 @@ void config_PWM_1() {
 
 }
 
+configCNInterrupt() {
+    // Configure Change Notification interrupt
+    // Set CN interrupt priority to 6
+    // PLACE CODE TO CONFIGURE CN INTERRUPT HERE
+    _CN5IE = 1; // Enable CN on pin 5 (CNEN1 register)
+    _CN5PUE = 0; // Disable pull-up resistor (CNPU1 register)
+    _CNIP = 6; // Set CN interrupt priority (IPC4 register)
+    _CNIE = 1; // Enable CN interrupts (IEC1 register)
 
-
-// Timer1 ISR -- This is the function that is automatically
-// called each time the timer reaches the value specified
-// in the register PR1. When that value is reached, the timer
-// interrupt flag (T1IF) is set to 1, the while(1) loop in the
-// main() function pauses, and the program branches to
-// this function.
-void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {
-    // Clear Timer1 interrupt flag so that the program doesn't
-    // just jump back to this function when it returns to the
-    // while(1) loop.
-    _T1IF = 0;
-
-    TMR1 = 0;
-    
-    //A pwm period of 39999 is 50 MHz or 20 ms.
-    //the servo goes from 0 to 180 degrees through
-    //1 to 2 ms period.  This is a duty cycle of
-    //2000 to 4000
-    if (OC1R <= 1) { 
-        OC1R = 8;
-    }
-    else {
-        OC1R = 1;
-    }
-    
-    if (_RB8 == 0) {
-        _RB8 = 1;
-    }
-    else {
-        _RB8 = 0;
-    }
-    
+    // Clear Change Notification interrupt flag (IFS1 register)
+    // PLACE CODE TO CLEAR THE CN INTERRUPT FLAG HERE
+    _CNIF = 0; // Clear interrupt flag (IFS1 register)
 }
 
-void configTimer2() {
-    
-    T2CONbits.TON = 1;      // turn on Timer1
-    T2CONbits.TCS = 0;      // INTERNAL CLOCK
-    T2CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
-    PR2 = 1000;      // TIMER PERIOD OF 155 is 50 Hz
-    TMR2 = 0;     // RESET TIMER1 TO ZERO
-    
+// Change Notification Interrupt Service Routine (ISR)
+// This function executes every time the micro receives
+// an interrupt originating from any of the CN pins. The
+// micro knows the interrupt is from the one of the CN 
+// when the change notification interrupt flag (CNIF)
+// is set.
+
+void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void)
+{
+
+    // Remember to clear the CN interrupt flag when
+    // this ISR is entered.
+    // PLACE CODE TO CLEAR THE CN INTERRUPT FLAG HERE
+    _CNIF = 0; // Clear interrupt flag
+
+    // Place in this ISR whatever code should be executed
+    // when a change in the button state is detected.
+    // You will need to write code to distinguish between
+    // a button press and a button release.
+    // PLACE CUSTOM CODE HERE
+    if (_RB12 == 1)     //Forward corner
+    {
+        stopDriving();
+    }
+    else if (_RB13 == 1){   //Back corner
+        stopDriving();
+    }
+    else                    //out of corner
+    {
+        _LATA0 = 0;
+        _LATB2 = 0;
+        state = 0;
+    }
 }
 
-void configTimer1() {
-    
-    T1CONbits.TON = 1;      // turn on Timer1
-    T1CONbits.TCS = 0;      // INTERNAL CLOCK
-    T1CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
-    PR1 = 15625;      // TIMER PERIOD OF 15625 is 2 seconds with the 2 MHz oscillator and 256 prescaler
-    TMR1 = 0;     // RESET TIMER1 TO ZERO
-    
-    // Configure Timer1 interrupt
-    _T1IP = 4;          // Select Timer1 interrupt priority
-    _T1IE = 1;          // Enable Timer1 interrupt
-    _T1IF = 0;          // Clear Timer1 interrupt flag
-}
-
-void raiseLift() {
+void stopDriving() {
     
 }
 
@@ -136,20 +123,17 @@ int main() {
     _TRISB13 = 0;
     _ANSB13 = 0;
     
-    //_RCDIV = 0b010;   //Configures postscaler on oscillator to Fcy = 2 MHz
     
     _OC1IE = 1;     //Enables the Interrupt
     config_PWM_1();
-    //configTimer1();
-    //configTimer2();
+    configCNInterrupt();
     
-    _LATB8 = 0;
+    _LATB8 = 1;
     _LATB13 = 1;
     
     
-    while(counter < 5) {
-        
-    }
+     
+    
     _LATB13 = 0;
     return 0;
 }
