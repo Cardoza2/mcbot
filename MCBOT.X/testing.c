@@ -29,21 +29,39 @@ void configPins() {
     _TRISB13 = 0;       //Rear bumpers pin 16
     _ANSB13 = 0;        //disable analog
     _TRISB12 = 1;       //Front Bumpers pin 15
-<<<<<<< HEAD
     _ANSB12 = 0;        // disable analog
-    _TRISA3 = 1;        //Pin 8 An14 IR sensor
-=======
-    _TRISA3 = 1;    
->>>>>>> 1bb70c1134307f44efe3a1357898c05cfe5de885
+    _TRISA3 = 1;        //Pin 8 An14 IR sensor  
     _ANSA3 = 1;        //IR sensor pin 8
+}
+
+void stopDriving() {
+    OC1R = 0;            //Sets driving stepper duty cycle 
+}
+
+void driveForward() {
+    OC1R = 3990;
+    _LATB7 = 1;
+    _LATB8 = 1;
+    _LATB9 = 0;
+}
+
+void turnRight() {
+    OC1R = 3990;
+    _LATB8 = 1;
+    _LATB9 = 1;
+}
+
+void findGoal() {
+    turnRight();
+    while(ADC1BUF14 < IRthreshold) {}
 }
 
 void _ISR _OC1Interrupt(void)
 {
     counter++;
-//    if (counter > 100) {
-//        stopDriving();
-//    }
+   if (counter > 1000) {
+       stopDriving();
+   }
    
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
 }
@@ -97,7 +115,7 @@ void config_PWM_1() {
 
 }
 
-configCNInterrupt() {
+void configCNInterrupt() {
     // Configure Change Notification interrupt
     // Set CN interrupt priority to 6
     // PLACE CODE TO CONFIGURE CN INTERRUPT HERE
@@ -194,84 +212,22 @@ void configAtoD() {
 	_ADON = 1;			// AD1CON1<15>
 }
 
-void stopDriving() {
-    OC1R = 0;            //Sets driving stepper duty cycle 
-}
 
-void driveForward() {
-    OC1R = 3990;
-    _LATB8 = 1;
-    _LATB9 = 0;
-}
-
-void turnRight() {
-    OC1R = 3990;
-    _LATB8 = 1;
-    _LATB9 = 1;
-}
-
-void findGoal() {
-    turnRight();
-    while(ADC1BUF14 < IRthreshold) {}
-}
 
 int main() {
     
+    
     configPins();
-    
-    
-    // Clear control bits initially
-    OC1CON1 = 0;
-    OC1CON2 = 0;
-    
-  
-    // Set period and duty cycle
-    OC1R = 3990;                // Set Output Compare value to achieve
-                                // desired duty cycle. This is the number
-                                // of timer counts when the OC should send
-                                // the PWM signal low. The duty cycle as a
-                                // fraction is OC1R/OC1RS.
-    OC1RS = 15000;               // Period of OC1 to achieve desired PWM 
-                                // frequency, FPWM. See Equation 15-1
-                                // in the datasheet. For example, for
-                                // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
-                                // register contains the period when the
-                                // SYNCSEL bits are set to 0x1F (see FRM)
-    
- 
-    
-    // Configure OC1
-    OC1CON1bits.OCTSEL = 0b111; // System (peripheral) clock as timing source
-    OC1CON2bits.SYNCSEL = 0x1F; // Select OC1 as synchronization source
-                                // (self synchronization) -- Although we
-                                // selected the system clock to determine
-                                // the rate at which the PWM timer increments,
-                                // we could have selected a different source
-                                // to determine when each PWM cycle initiates.
-                                // From the FRM: When the SYNCSEL<4:0> bits
-                                // (OCxCON2<4:0>) = 0b11111, they make the
-                                // timer reset when it reaches the value of
-                                // OCxRS, making the OCx module use its
-                                // own Sync signal.
-    OC1CON2bits.OCTRIG = 0;     // Synchronizes with OC1 source instead of
-                                // triggering with the OC1 source
-    OC1CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
-    
-   
-    
-    _OC1IE = 1; //ENABLES YOUR INTERRUPT
-    //config_PWM_1();
+    config_PWM_1();
     //configCNInterrupt();
     //configAtoD();
     
 //    
-//    driveForward();
+    driveForward();
 //    findGoal();
 //    driveForward();
-    while(1){
-        driveforward();
-    }
- 
+
+    while(1){}
     
 
     //_LATB7 = 0;
@@ -289,7 +245,7 @@ int main() {
 //        else {
 //            _LATB7 = 1;
 //        }
-    }
+    //}
     
    
     return 0;

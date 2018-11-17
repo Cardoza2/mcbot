@@ -17,6 +17,7 @@
       <itemPath>interrupts.c</itemPath>
       <itemPath>testing.c</itemPath>
       <itemPath>motions.c</itemPath>
+      <itemPath>lab 7.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -213,6 +214,8 @@
         <C30Global>
         </C30Global>
       </item>
+      <item path="lab 7.c" ex="true" overriding="false">
+      </item>
       <item path="main.c" ex="true" overriding="false">
         <C30>
         </C30>
@@ -236,8 +239,6 @@
         </C30-LD>
         <C30Global>
         </C30Global>
-      </item>
-      <item path="testing.c" ex="true" overriding="false">
       </item>
     </conf>
   </confs>
