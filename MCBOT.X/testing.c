@@ -17,18 +17,18 @@
 //Global Variables
 //*************************************************
 int counter = 0;
-int IRthreshold = 200;
+int IRthreshold = 1700;
 
 //*************************************************
 
 void configPins() {
-    _TRISA1 = 0;       //LED pin 11 temp 3
+    _TRISB7 = 0;       //LED pin 11 temp 3
     _ANSA1 = 0;
     _TRISB8 = 0;        //Stepper direction pin 12
     _TRISB9 = 0;        //Stepper direction pin 13
     _TRISB13 = 0;       //Rear bumpers pin 16
     _TRISB12 = 1;       //Front Bumpers pin 15
-    
+    _TRISA3 = 1;
     _ANSA3 = 1;        //IR sensor pin 8
 }
 
@@ -152,14 +152,14 @@ void configAtoD() {
 	// use auto-sample
 	_ASAM = 1;			// AD1CON1<2>
 	// choose a sample time >= 1 Tad, see Table 29-41 datasheet
-	_SAMC = 0b00001;		// AD1CON3<12:8>
+	_SAMC = 0b00011;		// AD1CON3<12:8>
 
 
 	/*** Choose Analog Channels to be Used ***/
 	// scan inputs
 	_CSCNA = 1;			// AD1CON2<10>
 	// choose which channels to scan, e.g. for ch AN12, set _CSS12 = 1;
-	_CSS2 = 1;			// AD1CSSH/L, pg. 217
+	_CSS14 = 1;			// AD1CSSH/L, pg. 217
 
 
 
@@ -204,29 +204,20 @@ void findGoal() {
 
 int main() {
     
-    //configPins();
+    configPins();
     //config_PWM_1();
     //configCNInterrupt();
-    //configAtoD();
+    configAtoD();
     
     
     //driveForward();
     //findGoal();
     //driveForward();
     
-    _TRISA1 = 0;       //LED pin 11 temp 3
-    _ANSA1 = 0;
-    _TRISB8 = 0;        //Stepper direction pin 12
-    _TRISB9 = 0;        //Stepper direction pin 13
-    _TRISB13 = 0;       //Rear bumpers pin 16
-    _TRISB12 = 1;       //Front Bumpers pin 15
+ 
     
-    _ANSA3 = 1;        //IR sensor pin 8
-    
-    while(1){
-    _LATA1 = 1;
-    }
-    /*
+
+    _LATB7 = 0;
     while(1) {
         if (ADC1BUF14 > IRthreshold) {
             _LATB7 = 1;
@@ -235,13 +226,13 @@ int main() {
             _LATB7 = 0;
         }
         
-        if (_RB13 = 1) {
-            _LATB7 = 1;
-        }
-        else {
-            _LATB7 = 0;
-        }
-    }*/
+//        if (_RB12 = 1) {  // We ran into an issue where the switches aren't going low.
+//            _LATB7 = 0;
+//        }
+//        else {
+//            _LATB7 = 1;
+//        }
+    }
     
    
     return 0;

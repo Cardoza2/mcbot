@@ -1,21 +1,21 @@
 Microchip Technology Inc, v1.35 (A)
 
 Tool Name:
-  g:\program files (x86)\microchip\xc16\v1.35\bin\bin\..\bin/elf-ld.exe
+  c:\program files (x86)\microchip\xc16\v1.35\bin\bin\..\bin/elf-ld.exe
 
 Command:
   -p24F16KA301 \
   -o \
   dist/default/production/MCBOT.X.production.elf \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/.. \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/PIC24E/gld \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/PIC24F/gld \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/PIC24H/gld \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC30F/gld \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33C/gld \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33E/gld \
-  -Lg:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33F/gld \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/.. \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/PIC24E/gld \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/PIC24F/gld \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/PIC24H/gld \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC30F/gld \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33C/gld \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33E/gld \
+  -Lc:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../support/dsPIC33F/gld \
   build/default/production/testing.o \
   --defsym=__MPLAB_BUILD=1 \
   -Tp24F16KA301.gld.00 \
@@ -44,11 +44,11 @@ Command:
 Optional library libpPIC24Fxxx.a not found
 Archive member included because of file (symbol)
 
-g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
                               (__resetPRI)
-g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
-                              g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o) (__data_init_standard)
-g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
+c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                              c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o) (__data_init_standard)
+c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
                               (__crt_start_mode_normal)
 
 
@@ -59,10 +59,10 @@ xc16-ld 1.35 (A)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x142           0x1e3  (483)
-.text                        0x342                0xea           0x15f  (351)
-.dinit                       0x42c                0x10            0x18  (24)
+.text                        0x342                0xf4           0x16e  (366)
+.dinit                       0x436                0x10            0x18  (24)
 
-                 Total "program" memory used (bytes):          0x35a  (858) 5%
+                 Total "program" memory used (bytes):          0x369  (873) 5%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -105,14 +105,14 @@ External Symbols in Program Memory (by address):
                   0x000302                  __CNInterrupt
                   0x00033c                  __DefaultInterrupt
                   0x000342                  _configPins
-                  0x000356                  _config_PWM_1
-                  0x000386                  _configCNInterrupt
-                  0x0003a0                  _configAtoD
-                  0x0003e8                  _stopDriving
-                  0x0003f0                  _driveForward
-                  0x0003fa                  _turnRight
-                  0x000404                  _findGoal
-                  0x000418                  _main
+                  0x000358                  _config_PWM_1
+                  0x000388                  _configCNInterrupt
+                  0x0003a2                  _configAtoD
+                  0x0003ec                  _stopDriving
+                  0x0003f4                  _driveForward
+                  0x0003fe                  _turnRight
+                  0x000408                  _findGoal
+                  0x00041c                  _main
 
 External Symbols in Program Memory (by name):
 
@@ -123,15 +123,15 @@ External Symbols in Program Memory (by name):
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x0003a0                  _configAtoD
-                  0x000386                  _configCNInterrupt
+                  0x0003a2                  _configAtoD
+                  0x000388                  _configCNInterrupt
                   0x000342                  _configPins
-                  0x000356                  _config_PWM_1
-                  0x0003f0                  _driveForward
-                  0x000404                  _findGoal
-                  0x000418                  _main
-                  0x0003e8                  _stopDriving
-                  0x0003fa                  _turnRight
+                  0x000358                  _config_PWM_1
+                  0x0003f4                  _driveForward
+                  0x000408                  _findGoal
+                  0x00041c                  _main
+                  0x0003ec                  _stopDriving
+                  0x0003fe                  _turnRight
 
 Memory Configuration
 
@@ -158,7 +158,7 @@ Linker script and memory map
 LOAD build/default/production/testing.o
                     0x0001                  __MPLAB_BUILD = 0x1
 LOAD pPIC24Fxxx
-LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
+LOAD c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
                     0xf80000                  __FBS = 0xf80000
                     0xf80004                  __FGS = 0xf80004
                     0xf80006                  __FOSCSEL = 0xf80006
@@ -183,11 +183,11 @@ LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
 
 .text             0x000200        0x142
  *(.init)
- .init            0x000200         0x4c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+ .init            0x000200         0x4c c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
                   0x000200                  __resetPRI
                   0x000200                  __reset
                   0x00023c                  __psv_init
- .init            0x00024c         0x7c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+ .init            0x00024c         0x7c c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
                   0x000252                  __data_init_standard
                   0x000252                  __data_init
  *(.user_init)
@@ -203,7 +203,7 @@ LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
  *(.libdsp)
  *(.lib*)
  .libpic30_crt_start_mode
-                  0x000340          0x2 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
+                  0x000340          0x2 c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
                   0x000340                  __crt_start_mode
                   0x000340                  __crt_start_mode_normal
 
@@ -237,26 +237,26 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x1f15
+.debug_info       0x000000       0x1e5d
  *(.debug_info)
- .debug_info      0x000000       0x1f15 build/default/production/testing.o
+ .debug_info      0x000000       0x1e5d build/default/production/testing.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x194
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x194 build/default/production/testing.o
 
-.debug_line       0x000000        0x152
+.debug_line       0x000000        0x158
  *(.debug_line)
- .debug_line      0x000000        0x152 build/default/production/testing.o
+ .debug_line      0x000000        0x158 build/default/production/testing.o
 
 .debug_frame      0x000000        0x194
  *(.debug_frame)
  .debug_frame     0x000000        0x194 build/default/production/testing.o
 
-.debug_str        0x000000         0xe4
+.debug_str        0x000000         0xdb
  *(.debug_str)
- .debug_str       0x000000         0xe4 build/default/production/testing.o
+ .debug_str       0x000000         0xdb build/default/production/testing.o
 
 .debug_loc
  *(.debug_loc)
@@ -887,9 +887,9 @@ __FDS
                     0x0230                  UART2 = 0x230
                     0x0230                  _UART2 = 0x230
 START GROUP
-LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a
-LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libm-elf.a
-LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-c-elf.a
+LOAD c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a
+LOAD c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libm-elf.a
+LOAD c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-c-elf.a
 END GROUP
 OUTPUT(dist/default/production/MCBOT.X.production.elf elf32-pic30)
 LOAD jump_table
@@ -897,18 +897,18 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000018        0x274
+                  0x000018        0x257
  .debug_pubtypes
-                  0x000018        0x274 build/default/production/testing.o
+                  0x000018        0x257 build/default/production/testing.o
 
 __c30_signature
-                  0x00028c         0x12
+                  0x00026f         0x12
  __c30_signature
-                  0x00028c          0x6 build/default/production/testing.o
+                  0x00026f          0x6 build/default/production/testing.o
  __c30_signature
-                  0x000292          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x000275          0x6 c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x000298          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x00027b          0x6 c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
 
 .nbss               0x0800          0x2
  .nbss              0x0800          0x2 build/default/production/testing.o
@@ -934,17 +934,17 @@ __c30_signature
  .ivt._CNInterrupt
                   0x00003a          0x2 build/default/production/testing.o
 
-.text             0x000342         0xea
- .text            0x000342         0xea build/default/production/testing.o
+.text             0x000342         0xf4
+ .text            0x000342         0xf4 build/default/production/testing.o
                   0x000342                  _configPins
-                  0x000356                  _config_PWM_1
-                  0x000386                  _configCNInterrupt
-                  0x0003a0                  _configAtoD
-                  0x0003e8                  _stopDriving
-                  0x0003f0                  _driveForward
-                  0x0003fa                  _turnRight
-                  0x000404                  _findGoal
-                  0x000418                  _main
+                  0x000358                  _config_PWM_1
+                  0x000388                  _configCNInterrupt
+                  0x0003a2                  _configAtoD
+                  0x0003ec                  _stopDriving
+                  0x0003f4                  _driveForward
+                  0x0003fe                  _turnRight
+                  0x000408                  _findGoal
+                  0x00041c                  _main
 
-.dinit            0x00042c         0x10
- .dinit           0x00042c         0x10 data_init
+.dinit            0x000436         0x10
+ .dinit           0x000436         0x10 data_init
