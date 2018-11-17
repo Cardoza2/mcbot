@@ -14,11 +14,27 @@
 #define pin12 = _RB8
 #define pin16 = _RB13
 
+
+
+//Global Variables
+//*************************************************
 int counter = 0;
+int IRthreshold = 10;
+
+//*************************************************
+
+void configPins() {
+    _TRISB8 = 0;
+    _TRISB13 = 0;
+    _ANSB13 = 0;
+}
 
 void _ISR _OC1Interrupt(void)
 {
     counter++;
+    if (counter > 100) {
+        stopDriving();
+    }
    
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
 }
@@ -61,7 +77,9 @@ void config_PWM_1() {
                                 // triggering with the OC1 source
     OC1CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
     
+    _OC1IE = 1;     //Enables the Interrupt
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+    
 
 }
 
@@ -108,32 +126,91 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void)
     }
     else                    //out of corner
     {
-        _LATA0 = 0;
-        _LATB2 = 0;
-        state = 0;
+        
     }
 }
 
+void configAtoD() {
+        /*** Select Voltage Reference Source ***/
+	// use AVdd for positive reference
+	_PVCFG = 0b00;		// AD1CON2<15:14>, pg. 212-213 datasheet
+	// use AVss for negative reference
+	_NVCFG = 0;			// AD1CON2<13>
+
+
+	/*** Select Analog Conversion Clock Rate ***/
+	// make sure Tad is at least 600ns, see Table 29-41 datasheet
+	_ADCS = 0b00000011;	// AD1CON3<7:0>, pg. 213 datasheet
+
+
+	/*** Select Sample/Conversion Sequence ***/
+	// use auto-convert
+	_SSRC = 0b0111;		// AD1CON1<7:4>, pg. 211 datasheet
+	// use auto-sample
+	_ASAM = 1;			// AD1CON1<2>
+	// choose a sample time >= 1 Tad, see Table 29-41 datasheet
+	_SAMC = 0b00001;		// AD1CON3<12:8>
+
+
+	/*** Choose Analog Channels to be Used ***/
+	// scan inputs
+	_CSCNA = 1;			// AD1CON2<10>
+	// choose which channels to scan, e.g. for ch AN12, set _CSS12 = 1;
+	_CSS2 = 1;			// AD1CSSH/L, pg. 217
+
+
+
+	/*** Select How Results are Presented in Buffer ***/
+	// set 12-bit resolution
+	_MODE12 = 1;		// AD1CON1<10>
+	// use absolute decimal format
+	_FORM = 0b00;			// AD1CON1<9:8>
+	// load results into buffer determined by converted channel, e.g. ch AN12 
+    // results appear in ADC1BUF12
+	_BUFREGEN = 1;		// AD1CON2<11>
+
+
+	/*** Select Interrupt Rate ***/
+	// interrupt rate should reflect number of analog channels used, e.g. if 
+    // 5 channels, interrupt every 5th sample
+	_SMPI = 0b00001;		// AD1CON2<6:2>
+
+
+	/*** Turn on A/D Module ***/
+	_ADON = 1;			// AD1CON1<15>
+}
+
 void stopDriving() {
-    
+    OC1R = 0;            //Sets driving stepper duty cycle 
+}
+
+void driveForward() {
+    _LATB8 = 1;
+    _LATB13 = 0;
+}
+
+void turnRight() {
+    _LATB8 = 1;
+    _LATB13 = 1;
+}
+
+void findGoal() {
+    turnRight();
+    while(ADC1BUF14 < IRthreshold) {}
 }
 
 int main() {
-    _TRISB8 = 0;
-    _TRISB13 = 0;
-    _ANSB13 = 0;
     
-    
-    _OC1IE = 1;     //Enables the Interrupt
+    configPins();
     config_PWM_1();
     configCNInterrupt();
-    
-    _LATB8 = 1;
-    _LATB13 = 1;
+    configAtoD();
     
     
-     
+    driveForward();
+    findGoal();
+    driveForward();
     
-    _LATB13 = 0;
+   
     return 0;
 }
