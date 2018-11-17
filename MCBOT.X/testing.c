@@ -28,7 +28,7 @@ void configPins() {
     _TRISA6 = 0;        // PWM Output
     _TRISB13 = 0;       //Rear bumpers pin 16
     _TRISB12 = 1;       //Front Bumpers pin 15
-    _TRISA3 = 1;
+    _TRISA3 = 1;    
     _ANSA3 = 1;        //IR sensor pin 8
 }
 
