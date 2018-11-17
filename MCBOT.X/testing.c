@@ -11,22 +11,25 @@
 #pragma config ICS = PGx3
 #include "xc.h"
 
-#define pin12 = _RB8
-#define pin16 = _RB13
 
 
 
 //Global Variables
 //*************************************************
 int counter = 0;
-int IRthreshold = 10;
+int IRthreshold = 200;
 
 //*************************************************
 
 void configPins() {
-    _TRISB8 = 0;
-    _TRISB13 = 0;
-    _ANSB13 = 0;
+    _TRISA1 = 0;       //LED pin 11 temp 3
+    _ANSA1 = 0;
+    _TRISB8 = 0;        //Stepper direction pin 12
+    _TRISB9 = 0;        //Stepper direction pin 13
+    _TRISB13 = 0;       //Rear bumpers pin 16
+    _TRISB12 = 1;       //Front Bumpers pin 15
+    
+    _ANSA3 = 1;        //IR sensor pin 8
 }
 
 void _ISR _OC1Interrupt(void)
@@ -201,15 +204,44 @@ void findGoal() {
 
 int main() {
     
-    configPins();
-    config_PWM_1();
-    configCNInterrupt();
-    configAtoD();
+    //configPins();
+    //config_PWM_1();
+    //configCNInterrupt();
+    //configAtoD();
     
     
-    driveForward();
-    findGoal();
-    driveForward();
+    //driveForward();
+    //findGoal();
+    //driveForward();
+    
+    _TRISA1 = 0;       //LED pin 11 temp 3
+    _ANSA1 = 0;
+    _TRISB8 = 0;        //Stepper direction pin 12
+    _TRISB9 = 0;        //Stepper direction pin 13
+    _TRISB13 = 0;       //Rear bumpers pin 16
+    _TRISB12 = 1;       //Front Bumpers pin 15
+    
+    _ANSA3 = 1;        //IR sensor pin 8
+    
+    while(1){
+    _LATA1 = 1;
+    }
+    /*
+    while(1) {
+        if (ADC1BUF14 > IRthreshold) {
+            _LATB7 = 1;
+        }
+        else {
+            _LATB7 = 0;
+        }
+        
+        if (_RB13 = 1) {
+            _LATB7 = 1;
+        }
+        else {
+            _LATB7 = 0;
+        }
+    }*/
     
    
     return 0;
