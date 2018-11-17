@@ -19,6 +19,7 @@
 int counter = 0;
 int IRthreshold = 3000;
 int next = 0;
+int blue = 0; 
 
 //*************************************************
 
@@ -41,9 +42,8 @@ void stopDriving() {
 
 void driveForward() {
     OC1R = 3990;
-    _LATB7 = 1;
-    _LATB8 = 1;
-    _LATB9 = 0;
+    _LATB8 = 0;
+    _LATB9 = 1;
 }
 
 void turnRight() {
@@ -55,6 +55,7 @@ void turnRight() {
 void findGoal() {
     turnRight();
     while(ADC1BUF14 < IRthreshold) {}
+    _LATB7 = 1; 
     stopDriving();
     next = 1;
 }
@@ -62,7 +63,7 @@ void findGoal() {
 void _ISR _OC1Interrupt(void)
 {
     counter++;
-   if (counter > 1000) {
+   if (counter > 600 && blue ==0) {
        stopDriving();
        next = 1;
        counter = 0;
@@ -229,11 +230,15 @@ int main() {
     
     driveForward();
     while(next == 0) {}
+    blue = 1;
     next = 0;
     findGoal();
     //while(next == 0) {}
     next == 0;
+    counter = 0;
+    blue = 0;
     driveForward();
+    while(1){}
     while(next == 0) {}
     
 

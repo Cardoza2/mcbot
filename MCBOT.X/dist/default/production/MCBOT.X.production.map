@@ -58,21 +58,21 @@ xc16-ld 1.35 (A)
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200               0x138           0x1d4  (468)
-.text                        0x338                0xf0           0x168  (360)
-.dinit                       0x428                0x10            0x18  (24)
+.text                        0x200               0x144           0x1e6  (486)
+.text                        0x344               0x110           0x198  (408)
+.dinit                       0x454                0x10            0x18  (24)
 
-                 Total "program" memory used (bytes):          0x354  (852) 5%
+                 Total "program" memory used (bytes):          0x396  (918) 5%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0x2  (2)
-.ndata                       0x802                   0             0x2  (2)
+.nbss                        0x800                   0             0x6  (6)
+.ndata                       0x806                   0             0x2  (2)
 
-                 Total "data" memory used (bytes):            0x4  (4) <1%
+                 Total "data" memory used (bytes):            0x8  (8) <1%
 
 
 Dynamic Memory Usage
@@ -80,20 +80,24 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x804                               0x7fc  (2044)
+stack                        0x808                               0x7f8  (2040)
 
-                 Maximum dynamic memory (bytes):          0x7fc  (2044)
+                 Maximum dynamic memory (bytes):          0x7f8  (2040)
 
 
 External Symbols in Data Memory (by address):
 
                     0x0800                  _counter
-                    0x0802                  _IRthreshold
+                    0x0802                  _next
+                    0x0804                  _blue
+                    0x0806                  _IRthreshold
 
 External Symbols in Data Memory (by name):
 
-                    0x0802                  _IRthreshold
+                    0x0806                  _IRthreshold
+                    0x0804                  _blue
                     0x0800                  _counter
+                    0x0802                  _next
 
 External Symbols in Program Memory (by address):
 
@@ -102,36 +106,36 @@ External Symbols in Program Memory (by address):
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x0002c8                  __OC1Interrupt
-                  0x0002fc                  __CNInterrupt
-                  0x000332                  __DefaultInterrupt
-                  0x000338                  _configPins
-                  0x000352                  _stopDriving
-                  0x00035a                  _driveForward
-                  0x00036a                  _turnRight
-                  0x000378                  _findGoal
-                  0x00038c                  _config_PWM_1
-                  0x0003ba                  _configCNInterrupt
-                  0x0003d4                  _configAtoD
-                  0x00041e                  _main
+                  0x000308                  __CNInterrupt
+                  0x00033e                  __DefaultInterrupt
+                  0x000344                  _configPins
+                  0x00035e                  _stopDriving
+                  0x000366                  _driveForward
+                  0x000374                  _turnRight
+                  0x000382                  _findGoal
+                  0x00039e                  _config_PWM_1
+                  0x0003cc                  _configCNInterrupt
+                  0x0003e6                  _configAtoD
+                  0x000430                  _main
 
 External Symbols in Program Memory (by name):
 
-                  0x0002fc                  __CNInterrupt
-                  0x000332                  __DefaultInterrupt
+                  0x000308                  __CNInterrupt
+                  0x00033e                  __DefaultInterrupt
                   0x0002c8                  __OC1Interrupt
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x0003d4                  _configAtoD
-                  0x0003ba                  _configCNInterrupt
-                  0x000338                  _configPins
-                  0x00038c                  _config_PWM_1
-                  0x00035a                  _driveForward
-                  0x000378                  _findGoal
-                  0x00041e                  _main
-                  0x000352                  _stopDriving
-                  0x00036a                  _turnRight
+                  0x0003e6                  _configAtoD
+                  0x0003cc                  _configCNInterrupt
+                  0x000344                  _configPins
+                  0x00039e                  _config_PWM_1
+                  0x000366                  _driveForward
+                  0x000382                  _findGoal
+                  0x000430                  _main
+                  0x00035e                  _stopDriving
+                  0x000374                  _turnRight
 
 Memory Configuration
 
@@ -181,7 +185,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200        0x138
+.text             0x000200        0x144
  *(.init)
  .init            0x000200         0x4c c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
                   0x000200                  __resetPRI
@@ -193,19 +197,19 @@ LOAD c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002c8         0x6a build/default/production/testing.o
+ .isr.text        0x0002c8         0x76 build/default/production/testing.o
                   0x0002c8                  __OC1Interrupt
-                  0x0002fc                  __CNInterrupt
- .isr             0x000332          0x4 default_isr
-                  0x000332                  __DefaultInterrupt
+                  0x000308                  __CNInterrupt
+ .isr             0x00033e          0x4 default_isr
+                  0x00033e                  __DefaultInterrupt
  *(.libc)
  *(.libm)
  *(.libdsp)
  *(.lib*)
  .libpic30_crt_start_mode
-                  0x000336          0x2 c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
-                  0x000336                  __crt_start_mode
-                  0x000336                  __crt_start_mode_normal
+                  0x000342          0x2 c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
+                  0x000342                  __crt_start_mode
+                  0x000342                  __crt_start_mode_normal
 
 usercode
  *(usercode)
@@ -237,18 +241,18 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x1ef4
+.debug_info       0x000000       0x1f36
  *(.debug_info)
- .debug_info      0x000000       0x1ef4 build/default/production/testing.o
+ .debug_info      0x000000       0x1f36 build/default/production/testing.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x155
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x155 build/default/production/testing.o
 
-.debug_line       0x000000        0x152
+.debug_line       0x000000        0x160
  *(.debug_line)
- .debug_line      0x000000        0x152 build/default/production/testing.o
+ .debug_line      0x000000        0x160 build/default/production/testing.o
 
 .debug_frame      0x000000        0x194
  *(.debug_frame)
@@ -265,10 +269,10 @@ __FDS
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000         0xdb
+                  0x000000         0xed
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0xdb build/default/production/testing.o
+                  0x000000         0xed build/default/production/testing.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -909,13 +913,15 @@ __c30_signature
  __c30_signature
                   0x000298          0x6 c:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
 
-.nbss               0x0800          0x2
- .nbss              0x0800          0x2 build/default/production/testing.o
+.nbss               0x0800          0x6
+ .nbss              0x0800          0x6 build/default/production/testing.o
                     0x0800                  _counter
+                    0x0802                  _next
+                    0x0804                  _blue
 
-.ndata              0x0802          0x2
- .ndata             0x0802          0x2 build/default/production/testing.o
-                    0x0802                  _IRthreshold
+.ndata              0x0806          0x2
+ .ndata             0x0806          0x2 build/default/production/testing.o
+                    0x0806                  _IRthreshold
 
 .config_IESO      0xf80006          0x2
  .config_IESO     0xf80006          0x2 build/default/production/testing.o
@@ -930,17 +936,17 @@ __c30_signature
  .ivt._CNInterrupt
                   0x00003a          0x2 build/default/production/testing.o
 
-.text             0x000338         0xf0
- .text            0x000338         0xf0 build/default/production/testing.o
-                  0x000338                  _configPins
-                  0x000352                  _stopDriving
-                  0x00035a                  _driveForward
-                  0x00036a                  _turnRight
-                  0x000378                  _findGoal
-                  0x00038c                  _config_PWM_1
-                  0x0003ba                  _configCNInterrupt
-                  0x0003d4                  _configAtoD
-                  0x00041e                  _main
+.text             0x000344        0x110
+ .text            0x000344        0x110 build/default/production/testing.o
+                  0x000344                  _configPins
+                  0x00035e                  _stopDriving
+                  0x000366                  _driveForward
+                  0x000374                  _turnRight
+                  0x000382                  _findGoal
+                  0x00039e                  _config_PWM_1
+                  0x0003cc                  _configCNInterrupt
+                  0x0003e6                  _configAtoD
+                  0x000430                  _main
 
-.dinit            0x000428         0x10
- .dinit           0x000428         0x10 data_init
+.dinit            0x000454         0x10
+ .dinit           0x000454         0x10 data_init
