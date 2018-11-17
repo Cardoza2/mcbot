@@ -49,19 +49,22 @@ void config_PWM_1() {
     // Clear control bits initially
     OC1CON1 = 0;
     OC1CON2 = 0;
-   
+    
+  
     // Set period and duty cycle
-    OC1R = 7000;                // Set Output Compare value to achieve
+    OC1R = 3990;                // Set Output Compare value to achieve
                                 // desired duty cycle. This is the number
                                 // of timer counts when the OC should send
                                 // the PWM signal low. The duty cycle as a
                                 // fraction is OC1R/OC1RS.
-    OC1RS = 15000;               // Period of OC1 to achieve desired PWM    //39999 should give 50Hz
+    OC1RS = 15000;               // Period of OC1 to achieve desired PWM 
                                 // frequency, FPWM. See Equation 15-1
                                 // in the datasheet. For example, for
                                 // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
                                 // register contains the period when the
                                 // SYNCSEL bits are set to 0x1F (see FRM)
+    
+ 
     
     // Configure OC1
     OC1CON1bits.OCTSEL = 0b111; // System (peripheral) clock as timing source
@@ -80,7 +83,9 @@ void config_PWM_1() {
                                 // triggering with the OC1 source
     OC1CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
     
-    _OC1IE = 1;     //Enables the Interrupt
+   
+    
+    _OC1IE = 1; //ENABLES YOUR INTERRUPT
    // _OC1IF = 0; // eNABLES iNTERRUPT FLAG
     
 
