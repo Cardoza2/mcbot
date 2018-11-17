@@ -18,6 +18,7 @@
 //*************************************************
 int counter = 0;
 int IRthreshold = 3000;
+int next = 0;
 
 //*************************************************
 
@@ -54,6 +55,8 @@ void turnRight() {
 void findGoal() {
     turnRight();
     while(ADC1BUF14 < IRthreshold) {}
+    stopDriving();
+    next = 1;
 }
 
 void _ISR _OC1Interrupt(void)
@@ -61,6 +64,8 @@ void _ISR _OC1Interrupt(void)
     counter++;
    if (counter > 1000) {
        stopDriving();
+       next = 1;
+       counter = 0;
    }
    
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
@@ -219,15 +224,17 @@ int main() {
     
     configPins();
     config_PWM_1();
-    //configCNInterrupt();
-    //configAtoD();
+    configCNInterrupt();
+    configAtoD();
     
-//    
     driveForward();
-//    findGoal();
-//    driveForward();
-
-    while(1){}
+    while(next == 0) {}
+    next = 0;
+    findGoal();
+    //while(next == 0) {}
+    next == 0;
+    driveForward();
+    while(next == 0) {}
     
 
     //_LATB7 = 0;
