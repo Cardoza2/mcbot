@@ -8,7 +8,7 @@
  */
 
 #pragma config FNOSC = FRC
-#pragma config ICS = PGx3
+//#pragma config ICS = PGx3
 #include "xc.h"
 
 
@@ -17,15 +17,15 @@
 //Global Variables
 //*************************************************
 int counter = 0;
-int IRthreshold = 1700;
+int IRthreshold = 3000;
 
 //*************************************************
 
 void configPins() {
     _TRISB7 = 0;       //LED pin 11 temp 3
-    _ANSA1 = 0;
     _TRISB8 = 0;        //Stepper direction pin 12
     _TRISB9 = 0;        //Stepper direction pin 13
+    _TRISA6 = 0;        // PWM Output
     _TRISB13 = 0;       //Rear bumpers pin 16
     _TRISB12 = 1;       //Front Bumpers pin 15
     _TRISA3 = 1;
@@ -35,9 +35,9 @@ void configPins() {
 void _ISR _OC1Interrupt(void)
 {
     counter++;
-    if (counter > 100) {
-        stopDriving();
-    }
+//    if (counter > 100) {
+//        stopDriving();
+//    }
    
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
 }
@@ -51,7 +51,7 @@ void config_PWM_1() {
     OC1CON2 = 0;
    
     // Set period and duty cycle
-    OC1R = 3990;                // Set Output Compare value to achieve
+    OC1R = 7000;                // Set Output Compare value to achieve
                                 // desired duty cycle. This is the number
                                 // of timer counts when the OC should send
                                 // the PWM signal low. The duty cycle as a
@@ -81,7 +81,7 @@ void config_PWM_1() {
     OC1CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
     
     _OC1IE = 1;     //Enables the Interrupt
-    _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+   // _OC1IF = 0; // eNABLES iNTERRUPT FLAG
     
 
 }
@@ -188,13 +188,15 @@ void stopDriving() {
 }
 
 void driveForward() {
+    OC1R = 3990;
     _LATB8 = 1;
-    _LATB13 = 0;
+    _LATB9 = 0;
 }
 
 void turnRight() {
+    OC1R = 3990;
     _LATB8 = 1;
-    _LATB13 = 1;
+    _LATB9 = 1;
 }
 
 void findGoal() {
@@ -205,26 +207,28 @@ void findGoal() {
 int main() {
     
     configPins();
-    //config_PWM_1();
+    config_PWM_1();
     //configCNInterrupt();
-    configAtoD();
+    //configAtoD();
     
-    
-    //driveForward();
-    //findGoal();
-    //driveForward();
-    
+//    
+//    driveForward();
+//    findGoal();
+//    driveForward();
+    while(1){
+        driveforward();
+    }
  
     
 
-    _LATB7 = 0;
-    while(1) {
-        if (ADC1BUF14 > IRthreshold) {
-            _LATB7 = 1;
-        }
-        else {
-            _LATB7 = 0;
-        }
+    //_LATB7 = 0;
+//    while(1) {
+//        if (ADC1BUF14 > IRthreshold) {
+//            _LATB7 = 1;
+//        }
+//        else {
+//            _LATB7 = 0;
+//        }
         
 //        if (_RB12 = 1) {  // We ran into an issue where the switches aren't going low.
 //            _LATB7 = 0;

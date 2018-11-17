@@ -237,6 +237,8 @@
         <C30Global>
         </C30Global>
       </item>
+      <item path="testing.c" ex="true" overriding="false">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>

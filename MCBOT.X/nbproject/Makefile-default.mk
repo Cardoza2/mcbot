@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=testing.c
+SOURCEFILES_QUOTED_IF_SPACED=
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/testing.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/testing.o.d
+OBJECTFILES_QUOTED_IF_SPACED=
+POSSIBLE_DEPFILES=
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/testing.o
+OBJECTFILES=
 
 # Source Files
-SOURCEFILES=testing.c
+SOURCEFILES=
 
 
 CFLAGS=
@@ -94,21 +94,7 @@ MP_LINKER_FILE_OPTION=,--script=p24F16KA301.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/testing.o: testing.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/testing.o.d 
-	@${RM} ${OBJECTDIR}/testing.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  testing.c  -o ${OBJECTDIR}/testing.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/testing.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/testing.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
 else
-${OBJECTDIR}/testing.o: testing.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/testing.o.d 
-	@${RM} ${OBJECTDIR}/testing.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  testing.c  -o ${OBJECTDIR}/testing.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/testing.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/testing.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
-	
 endif
 
 # ------------------------------------------------------------------------------------
