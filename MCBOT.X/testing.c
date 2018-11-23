@@ -34,6 +34,8 @@ void configPins() {
     _ANSB12 = 0;        // disable analog
     _TRISA3 = 1;        //Pin 8 An14 IR sensor  
     _ANSA3 = 1;        //IR sensor pin 8
+    _TRISB14 = 0; // pin 17 Trigger LED
+    _ANSB14 = 0; //pin 17 analog off 
 }
 
 void stopDriving() {
