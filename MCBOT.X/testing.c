@@ -28,14 +28,14 @@ void configPins() {
     _TRISB8 = 0;        //Stepper direction pin 12
     _TRISB9 = 0;        //Stepper direction pin 13
     _TRISA6 = 0;        // PWM Output
-    _TRISB13 = 0;       //Rear bumpers pin 16
+    _TRISB13 = 1;       //Rear bumpers pin 16
     _ANSB13 = 0;        //disable analog
     _TRISB12 = 1;       //Front Bumpers pin 15
     _ANSB12 = 0;        // disable analog
     _TRISA3 = 1;        //Pin 8 An14 IR sensor  
     _ANSA3 = 1;        //IR sensor pin 8
-    _TRISB14 = 0; // pin 17 Trigger LED
-    _ANSB14 = 0; //pin 17 analog off 
+    _TRISB14 = 0;       // pin 17 Trigger LED
+    _ANSB14 = 0;        //pin 17 analog off 
 }
 
 void stopDriving() {
