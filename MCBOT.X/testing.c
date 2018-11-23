@@ -24,18 +24,35 @@ int blue = 0;
 //*************************************************
 
 void configPins() {
-    _TRISB7 = 0;       //LED pin 11 temp 3
-    _TRISB8 = 0;        //Stepper direction pin 12
-    _TRISB9 = 0;        //Stepper direction pin 13
-    _TRISA6 = 0;        // PWM Output
-    _TRISB13 = 1;       //Rear bumpers pin 16
-    _ANSB13 = 0;        //disable analog
-    _TRISB12 = 1;       //Front Bumpers pin 15
-    _ANSB12 = 0;        // disable analog
-    _TRISA3 = 1;        //Pin 8 An14 IR sensor  
-    _ANSA3 = 1;        //IR sensor pin 8
-    _TRISB14 = 0;       // pin 17 Trigger LED
-    _ANSB14 = 0;        //pin 17 analog off 
+    _TRISA0 = 0; //pin 2 Lift Sleep
+    _ANSA0 = 0; //pin 2 Disable analog (AN0)
+    _TRISA1 = 0; //pin 3 Lift direction
+    _ANSA1 = 0; //pin3 disable analog (AN1)
+    _TRISB0 = 0; //pin 4 Lift PWM output (OC2)
+    /// Does PWM need the analog disabled? 
+    _TRISB1 = 0; //pin 5 Servo PWM (OC3)
+    /// Does PWM need the analog disabled?
+    _TRISB2 = 1; //Pin 6 An4 IR sensor  
+    _ANSB2 = 1; //Pin 6 IR sensor 
+    _TRISA2 = 0; // pin 7 QRD1114 led line
+    _ANSA2 = 0; //pin 7 disable analog (AN13)
+    _TRISA3 = 1; //pin 8 QRD1114 analog line
+    _ANSA3 =1; //pin 8 enable analog (AN14)
+    
+    
+    _TRISB7 = 0; //pin 11 debugging LED 
+    _TRISB8 = 0; //pin 12 Drive Stepper direction 
+    _TRISB9 = 0; //pin 13 Drive Stepper direction pin 13
+    _TRISA6 = 0; //pin 14 Drive PWM Output pin 14
+    //// Does the PWM need to have the analog disabled? 
+    _TRISB12 = 1; //pin 15 Front Bumpers pin 15
+    _ANSB12 = 0; // pin 15 disable analog
+    _TRISB13 = 1; //pin 16 Rear bumpers pin 16
+    _ANSB13 = 0; //pin 16 disable analog
+    _TRISB14 = 0; // pin 17 Trigger LED
+    _ANSB14 = 0; //pin 17 analog off 
+    _TRISB15 = 0; // pin 18 Drive stepper sleep
+    _ANSB15 = 0; //pin 18 disable analog
 }
 
 void stopDriving() {
