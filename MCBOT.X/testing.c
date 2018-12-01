@@ -8,8 +8,10 @@
  */
 
 #pragma config FNOSC = FRC
-//#pragma config ICS = PGx3
+#pragma config ICS = PGx3
 #include "xc.h"
+#define FCY 4000000UL       //needed for delay function
+#include <libpic30.h>       //needed for delay function
 
 
 
@@ -31,6 +33,7 @@ void configPins() {
     _TRISB0 = 0; //pin 4 Lift PWM output (OC2)
     /// Does PWM need the analog disabled? 
     _TRISB1 = 0; //pin 5 Servo PWM (OC3)
+    //_ANSB1 = 0;
     /// Does PWM need the analog disabled?
     _TRISB2 = 1; //Pin 6 An4 IR sensor  
     _ANSB2 = 1; //Pin 6 IR sensor 
@@ -239,26 +242,133 @@ void configAtoD() {
 
 
 
+void configTimer2() {
+    
+    T2CONbits.TON = 1;      // turn on Timer1
+    T2CONbits.TCS = 0;      // INTERNAL CLOCK
+    T2CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
+    PR2 = 155;      // TIMER PERIOD OF 155 is 50 Hz
+    TMR2 = 0;     // RESET TIMER1 TO ZERO
+    _T2IE = 0;  //Enables interrupt
+    
+}
+
+void config_PWM_3() {
+      //-----------------------------------------------------------
+    // CONFIGURE PWM3 USING OC3 (on pin 5)
+    
+    // Clear control bits initially
+    OC3CON1 = 0;
+    OC3CON2 = 0;
+    
+  
+    // Set period and duty cycle
+    OC3R = 3990;                // Set Output Compare value to achieve          //Set values between 2000 and 4000
+                                // desired duty cycle. This is the number
+                                // of timer counts when the OC should send
+                                // the PWM signal low. The duty cycle as a
+                                // fraction is OC1R/OC1RS.
+    
+    OC3RS = 40000;               // Period of OC1 to achieve desired PWM 
+                                // frequency, FPWM. See Equation 15-1
+                                // in the datasheet. For example, for
+                                // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
+                                // register contains the period when the
+                                // SYNCSEL bits are set to 0x1F (see FRM)
+    
+ 
+    
+    // Configure OC3
+    OC3CON1bits.OCTSEL = 0b111; // System (peripheral) clock as timing source       //000 is Timer2
+    OC3CON2bits.SYNCSEL = 0x1F; // Select OC1 as synchronization source
+                                // (self synchronization) -- Although we
+                                // selected the system clock to determine
+                                // the rate at which the PWM timer increments,
+                                // we could have selected a different source
+                                // to determine when each PWM cycle initiates.
+                                // From the FRM: When the SYNCSEL<4:0> bits
+                                // (OCxCON2<4:0>) = 0b11111, they make the
+                                // timer reset when it reaches the value of
+                                // OCxRS, making the OCx module use its
+                                // own Sync signal.
+    OC3CON2bits.OCTRIG = 0;     // Synchronizes with OC1 source instead of
+                                // triggering with the OC1 source
+    OC3CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
+    
+   
+    
+    //_OC3IE = 1; //ENABLES YOUR INTERRUPT
+   // _OC3IF = 0; // eNABLES iNTERRUPT FLAG
+    
+
+}
+
+void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(void) {       //used for sorting servo
+    // Clear Timer2 interrupt flag so that the program doesn't
+    // just jump back to this function when it returns to the
+    // while(1) loop.
+    _T2IF = 0;
+
+    TMR2 = 0;
+    
+    //A pwm period of 39999 is 50 MHz or 20 ms.
+    //the servo goes from 0 to 180 degrees through
+    //1 to 2 ms period.  This is a duty cycle of
+    //2000 to 4000
+    if (OC3R <= 100) { 
+        OC3R = 800;
+    }
+    else {
+        OC3R = 100;
+    }
+}
+
 int main() {
     
-    
+    configTimer2();
     configPins();
-    config_PWM_1();
-    configCNInterrupt();
-    configAtoD();
+    config_PWM_3();
+    while(1) {
+        OC3R = 2100;
+        __delay_ms(1000);
+        OC3R = 3000;
+        __delay_ms(1000);
+    }
     
-    driveForward();
-    while(next == 0) {}
-    blue = 1;
-    next = 0;
-    findGoal();
-    //while(next == 0) {}
-    next == 0;
-    counter = 0;
-    blue = 0;
-    driveForward();
-    while(1){}
-    while(next == 0) {}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //Milestone 10
+//    configPins();
+//    config_PWM_1();
+//    configCNInterrupt();
+//    configAtoD();
+//    
+//    driveForward();
+//    while(next == 0) {}
+//    blue = 1;
+//    next = 0;
+//    findGoal();
+//    //while(next == 0) {}
+//    next == 0;
+//    counter = 0;
+//    blue = 0;
+//    driveForward();
+//    while(1){}
+//    while(next == 0) {}
     
 
     //_LATB7 = 0;

@@ -11,8 +11,8 @@
     <memory name="program">
       <units>bytes</units>
       <length>16128</length>
-      <used>918</used>
-      <free>15210</free>
+      <used>1146</used>
+      <free>14982</free>
     </memory>
   </executable>
 </project>
