@@ -54,10 +54,10 @@ void sort(char color) {
 
 char senseColor() {
     char color;
-    if (ADCBUF14 > 3700) {      //3700 is approx 3V
+    if (ADC1BUF14 > 3700) {      //3700 is approx 3V
         color = 'w';
     }
-    else if (ADCBUF14 > 1700) {     //1700 is approx 1.4V
+    else if (ADC1BUF14 > 1700) {     //1700 is approx 1.4V
         color = 'b';
     }
     else {
