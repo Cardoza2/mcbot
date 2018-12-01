@@ -8,10 +8,8 @@
  */
 
 #pragma config FNOSC = FRC
-#pragma config ICS = PGx3
+//#pragma config ICS = PGx3
 #include "xc.h"
-#define FCY 4000000UL       //needed for delay function
-#include <libpic30.h>       //needed for delay function
 
 
 
@@ -33,7 +31,6 @@ void configPins() {
     _TRISB0 = 0; //pin 4 Lift PWM output (OC2)
     /// Does PWM need the analog disabled? 
     _TRISB1 = 0; //pin 5 Servo PWM (OC3)
-    //_ANSB1 = 0;
     /// Does PWM need the analog disabled?
     _TRISB2 = 1; //Pin 6 An4 IR sensor  
     _ANSB2 = 1; //Pin 6 IR sensor 
@@ -82,17 +79,17 @@ void findGoal() {
     next = 1;
 }
 
-void _ISR _OC1Interrupt(void)
-{
-    counter++;
-   if (counter > 600 && blue ==0) {
-       stopDriving();
-       next = 1;
-       counter = 0;
-   }
-   
-    _OC1IF = 0; // eNABLES iNTERRUPT FLAG
-}
+//void _ISR _OC1Interrupt(void)
+//{
+//    counter++;
+//   if (counter > 600 && blue ==0) {
+//       stopDriving();
+//       next = 1;
+//       counter = 0;
+//   }
+//   
+//    _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+//}
 
 void config_PWM_1() {
       //-----------------------------------------------------------
@@ -240,167 +237,15 @@ void configAtoD() {
 	_ADON = 1;			// AD1CON1<15>
 }
 
-void configcolor() {
-    // This code was taken from lab 6
-    // for the Color sensor pins 7 and 8 will be used (A2=pin 7 and will be used for the led) (A3=pin 8 and will be used for the analog line)
-    // The only thing different from the Lab 6 code is the pin configuration
-    
-    /*** Select Voltage Reference Source ***/
-	// use AVdd for positive reference
-	_PVCFG = 0b00;		// AD1CON2<15:14>, pg. 212-213 datasheet
-	// use AVss for negative reference
-	_NVCFG = 0;			// AD1CON2<13>
 
-
-	/*** Select Analog Conversion Clock Rate ***/
-	// make sure Tad is at least 600ns, see Table 29-41 datasheet
-	_ADCS = 0b00000011;	// AD1CON3<7:0>, pg. 213 datasheet
-    
-
-	/*** Select Sample/Conversion Sequence ***/
-	// use auto-convert
-	_SSRC = 0b0111;		// AD1CON1<7:4>, pg. 211 datasheet
-	// use auto-sample
-	_ASAM = 1;			// AD1CON1<2>
-	// choose a sample time >= 1 Tad, see Table 29-41 datasheet
-	_SAMC = 0b00001;		// AD1CON3<12:8>
-
-
-	/*** Choose Analog Channels to be Used ***/
-	// scan inputs
-	_CSCNA = 1;			// AD1CON2<10>
-	// choose which channels to scan, e.g. for ch AN12, set _CSS12 = 1;
-	_CSS14 = 1;			// AD1CSSH/L, pg. 217  // I used _CSS14 because pin 8 is reading in the analog signal, and the analog channel for pin 8 is AN14
-    
-
-
-	/*** Select How Results are Presented in Buffer ***/
-	// set 12-bit resolution
-	_MODE12 = 1;		// AD1CON1<10>
-	// use absolute decimal format
-	_FORM = 0b00;			// AD1CON1<9:8>
-	// load results into buffer determined by converted channel, e.g. ch AN12 
-    // results appear in ADC1BUF12
-	_BUFREGEN = 1;		// AD1CON2<11>
-
-
-	/*** Select Interrupt Rate ***/
-	// interrupt rate should reflect number of analog channels used, e.g. if 
-    // 5 channels, interrupt every 5th sample
-	_SMPI = 0b00001;		// AD1CON2<6:2> // Interrupts at the completion of the conversion for every other sample of 0b00001--Comment added by Spencer
-
-
-	/*** Turn on A/D Module ***/
-	_ADON = 1;			// AD1CON1<15>
-    
-    int something = (1/3.3)*4095;
-    while(1)
-    {
-        if (ADC1BUF14 > something)
-        {
-            _LATA2 = 1;
-        }
-        else
-        {
-            _LATA2 = 0;
-        }
-    }
-}
-
-void configTimer2() {
-    
-    T2CONbits.TON = 1;      // turn on Timer2
-    T2CONbits.TCS = 0;      // INTERNAL CLOCK
-    T2CONbits.TCKPS = 0b01;     // 1:256 prescale. For more info on why its 0b11 check the data sheet  //01 is an 8 prescale
-    PR2 = 155;      // TIMER PERIOD OF 155 is 50 Hz
-    TMR2 = 0;     // RESET TIMER1 TO ZERO
-    //_T2IE = 0;  //Enables interrupt
-    
-}
-
-void config_PWM_3() {
-      //-----------------------------------------------------------
-    // CONFIGURE PWM3 USING OC3 (on pin 5)
-    
-    // Clear control bits initially
-    OC3CON1 = 0;
-    OC3CON2 = 0;
-    
-  
-    // Set period and duty cycle
-    OC3R = 560;                // Set Output Compare value to achieve          //Set values between 500 and 1000
-                                // desired duty cycle. This is the number
-                                // of timer counts when the OC should send
-                                // the PWM signal low. The duty cycle as a
-                                // fraction is OC1R/OC1RS.
-    
-    OC3RS = 9999;               // Period of OC1 to achieve desired PWM 
-                                // frequency, FPWM. See Equation 15-1
-                                // in the datasheet. For example, for
-                                // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
-                                // register contains the period when the
-                                // SYNCSEL bits are set to 0x1F (see FRM)
-    
- 
-    
-    // Configure OC3
-    OC3CON1bits.OCTSEL = 0b000; // System (peripheral) clock as timing source       //000 is Timer2
-    OC3CON2bits.SYNCSEL = 0x1F; // Select OC1 as synchronization source
-                                // (self synchronization) -- Although we
-                                // selected the system clock to determine
-                                // the rate at which the PWM timer increments,
-                                // we could have selected a different source
-                                // to determine when each PWM cycle initiates.
-                                // From the FRM: When the SYNCSEL<4:0> bits
-                                // (OCxCON2<4:0>) = 0b11111, they make the
-                                // timer reset when it reaches the value of
-                                // OCxRS, making the OCx module use its
-                                // own Sync signal.
-    OC3CON2bits.OCTRIG = 0;     // Synchronizes with OC1 source instead of
-                                // triggering with the OC1 source
-    OC3CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
-    
-   
-    
-    //_OC3IE = 1; //ENABLES YOUR INTERRUPT
-   // _OC3IF = 0; // eNABLES iNTERRUPT FLAG
-    
-
-}
-
-void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(void) {       //used for sorting servo
-    // Clear Timer2 interrupt flag so that the program doesn't
-    // just jump back to this function when it returns to the
-    // while(1) loop.
-    _T2IF = 0;
-
-    TMR2 = 0;
-    
-    //A pwm period of 39999 is 50 MHz or 20 ms.
-    //the servo goes from 0 to 180 degrees through
-    //1 to 2 ms period.  This is a duty cycle of
-    //2000 to 4000
-    if (OC3R <= 100) { 
-        OC3R = 800;
-    }
-    else {
-        OC3R = 100;
-    }
-}
 
 int main() {
     
-    configTimer2();
+    
     configPins();
-    config_PWM_3();
-    while(1) {
-        OC3R = 560;
-        __delay_ms(3000);
-        OC3R = 400;
-        __delay_ms(3000);
-    }
-    
-    //400, 700
+    //config_PWM_1();
+    //configCNInterrupt();
+    configAtoD();
     
     
     
@@ -408,42 +253,36 @@ int main() {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    //Milestone 10
-//    configPins();
-//    config_PWM_1();
-//    configCNInterrupt();
-//    configAtoD();
+//    _LATB7 = 0;
 //    
-//    driveForward();
-//    while(next == 0) {}
-//    blue = 1;
-//    next = 0;
-//    findGoal();
-//    //while(next == 0) {}
-//    next == 0;
-//    counter = 0;
-//    blue = 0;
-//    driveForward();
-//    while(1){}
-//    while(next == 0) {}
+//    if(_RB12 == 1){
+//        _LATB7 = 1;
+//    }
+//    else{
+//        _LATB7 =0;
+//    }
+//    
+//    if(_RB13 ==1){
+//        _LATB7 = 1;
+//    }
     
+//    if(_RB13 ==1){
+//    _LATB7 == 1;
+//    }
+//    else{
+//        _LATB7 =0;
+//    }
 
-    //_LATB7 = 0;
-//    while(1) {
-//        if (ADC1BUF14 > IRthreshold) {
-//            _LATB7 = 1;
-//        }
-//        else {
-//            _LATB7 = 0;
-//        }
+    _LATA2 = 1; 
+    _LATB7 = 1;
+    while(1) {
+        if (ADC1BUF14 > IRthreshold) {
+            _LATB7 = 0;
+        }
+        else {
+            _LATB7 = 1;
+        }
+    }
         
 //        if (_RB12 = 1) {  // We ran into an issue where the switches aren't going low.
 //            _LATB7 = 0;

@@ -3,8 +3,8 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>MCBOT</name>
-            <creation-uuid>80838f70-0f7f-47df-ab97-688105276a6c</creation-uuid>
+            <name>Experiment</name>
+            <creation-uuid>aef0e213-17f3-4249-aa8c-3028737b2df3</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>
@@ -12,16 +12,6 @@
             <asminc-extensions/>
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
-            <sourceRootList/>
-            <confList>
-                <confElem>
-                    <name>default</name>
-                    <type>2</type>
-                </confElem>
-            </confList>
-            <formatting>
-                <project-formatting-style>false</project-formatting-style>
-            </formatting>
         </data>
     </configuration>
 </project>
