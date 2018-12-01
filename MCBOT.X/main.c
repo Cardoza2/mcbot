@@ -40,8 +40,9 @@
 
 
 
-enum asdf {start, sort, , score}; //lists the possible states
+enum asdf {start, sort, score, end}; //lists the possible states
 int numSorted = 0;
+int IRthreshold = 3000;
 
 int main()
 {
@@ -61,12 +62,14 @@ int main()
                 _LATA2 = 1;         //turn on IR LED
                 while(numSorted < 4) {
                     _LATB14 = 1;     //turn on trigger LED
-                    sort(senseColor());
+                    sort(senseColor());     //determines color and moves sorting arm
                     _LATB14 = 0;    //Turn LED off
-                    
+                    OC3R = 560;     //Return sorting arm to middle
                 }
+                state = end;
                 break;
-            case findGoal:
+            case end:
+                return 0;
                 break;
         }
         // State 1

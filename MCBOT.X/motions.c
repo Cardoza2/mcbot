@@ -34,9 +34,11 @@ void findDispenser() {
 void sort(char color) {
     if (color == 'b') {
         OC3R = 400;
+        numSorted++;
     }
     else if (color == 'w') {
         OC3R = 700;
+        numSorted++;
     }
     else {
         OC3R = 560;
@@ -44,5 +46,16 @@ void sort(char color) {
 }
 
 char senseColor() {
+    char color;
+    if (ADCBUF14 > 3700) {      //3700 is approx 3V
+        color = 'w';
+    }
+    else if (ADCBUF14 > 1700) {     //1700 is approx 1.4V
+        color = 'b';
+    }
+    else {
+        color = 'n';            //means there is nothing there
+    }
     
+    return color;
 }
