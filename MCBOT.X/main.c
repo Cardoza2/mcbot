@@ -34,6 +34,7 @@
 
 
 #include "xc.h"
+#include <stdbool.h>  //need for bool
 
 // Select oscillator
 #pragma config FNOSC = FRC       // 8 MHz FRC oscillator
@@ -43,13 +44,14 @@
 enum asdf {start, sort, score, end}; //lists the possible states
 int numSorted = 0;
 int IRthreshold = 3000;
+bool driving = false;    //true means we are driving, false means we've stopped
 
 int main()
 {
     configPins();
-    config_PWM_3();
-    configAtoD();
-    configTimer2();
+    config_PWM_3();     //sorting servo
+    configAtoD();       //both color and IR sensors
+    configTimer2();     //sorting servo
     asdf state = start; //possibly start in the findDispenser state?
     while(1)
     {

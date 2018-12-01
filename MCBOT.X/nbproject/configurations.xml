@@ -190,7 +190,7 @@
       <PICkit3PlatformTool>
         <property key="firmware.download.all" value="false"/>
       </PICkit3PlatformTool>
-      <item path="config.c" ex="true" overriding="false">
+      <item path="config.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -202,7 +202,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="interrupts.c" ex="true" overriding="false">
+      <item path="interrupts.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -226,7 +226,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="main.c" ex="true" overriding="false">
+      <item path="main.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -238,7 +238,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="motions.c" ex="true" overriding="false">
+      <item path="motions.c" ex="false" overriding="false">
         <C30>
         </C30>
         <C30-AR>
@@ -250,7 +250,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="testing.c" ex="false" overriding="false">
+      <item path="testing.c" ex="true" overriding="false">
         <C30>
         </C30>
         <C30-AR>

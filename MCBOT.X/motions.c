@@ -6,13 +6,20 @@
  */
 
 void driveForward() {
+    driving = true;    //sets boolean
     _LATB8 = 1;
     _LATB13 = 0;
+    while(driving) {}   //switches in stopDriving function
 }
 
 void turnRight() {
     _LATB8 = 1;
     _LATB13 = 1;
+}
+
+void stopDriving() {
+    driving = false;     //used in driveForward function
+    OC1R = 0;            //Sets driving stepper duty cycle 
 }
 
 void raiseLift() {
