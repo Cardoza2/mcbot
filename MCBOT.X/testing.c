@@ -244,12 +244,12 @@ void configAtoD() {
 
 void configTimer2() {
     
-    T2CONbits.TON = 1;      // turn on Timer1
+    T2CONbits.TON = 1;      // turn on Timer2
     T2CONbits.TCS = 0;      // INTERNAL CLOCK
-    T2CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
+    T2CONbits.TCKPS = 0b01;     // 1:256 prescale. For more info on why its 0b11 check the data sheet  //01 is an 8 prescale
     PR2 = 155;      // TIMER PERIOD OF 155 is 50 Hz
     TMR2 = 0;     // RESET TIMER1 TO ZERO
-    _T2IE = 0;  //Enables interrupt
+    //_T2IE = 0;  //Enables interrupt
     
 }
 
@@ -263,13 +263,13 @@ void config_PWM_3() {
     
   
     // Set period and duty cycle
-    OC3R = 3990;                // Set Output Compare value to achieve          //Set values between 2000 and 4000
+    OC3R = 560;                // Set Output Compare value to achieve          //Set values between 500 and 1000
                                 // desired duty cycle. This is the number
                                 // of timer counts when the OC should send
                                 // the PWM signal low. The duty cycle as a
                                 // fraction is OC1R/OC1RS.
     
-    OC3RS = 40000;               // Period of OC1 to achieve desired PWM 
+    OC3RS = 9999;               // Period of OC1 to achieve desired PWM 
                                 // frequency, FPWM. See Equation 15-1
                                 // in the datasheet. For example, for
                                 // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
@@ -279,7 +279,7 @@ void config_PWM_3() {
  
     
     // Configure OC3
-    OC3CON1bits.OCTSEL = 0b111; // System (peripheral) clock as timing source       //000 is Timer2
+    OC3CON1bits.OCTSEL = 0b000; // System (peripheral) clock as timing source       //000 is Timer2
     OC3CON2bits.SYNCSEL = 0x1F; // Select OC1 as synchronization source
                                 // (self synchronization) -- Although we
                                 // selected the system clock to determine
@@ -329,13 +329,13 @@ int main() {
     configPins();
     config_PWM_3();
     while(1) {
-        OC3R = 2100;
-        __delay_ms(1000);
-        OC3R = 3000;
-        __delay_ms(1000);
+        OC3R = 560;
+        __delay_ms(3000);
+        OC3R = 400;
+        __delay_ms(3000);
     }
     
-    
+    //400, 700
     
     
     
