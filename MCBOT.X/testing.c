@@ -240,7 +240,72 @@ void configAtoD() {
 	_ADON = 1;			// AD1CON1<15>
 }
 
+void configcolor() {
+    // This code was taken from lab 6
+    // for the Color sensor pins 7 and 8 will be used (A2=pin 7 and will be used for the led) (A3=pin 8 and will be used for the analog line)
+    // The only thing different from the Lab 6 code is the pin configuration
+    
+    /*** Select Voltage Reference Source ***/
+	// use AVdd for positive reference
+	_PVCFG = 0b00;		// AD1CON2<15:14>, pg. 212-213 datasheet
+	// use AVss for negative reference
+	_NVCFG = 0;			// AD1CON2<13>
 
+
+	/*** Select Analog Conversion Clock Rate ***/
+	// make sure Tad is at least 600ns, see Table 29-41 datasheet
+	_ADCS = 0b00000011;	// AD1CON3<7:0>, pg. 213 datasheet
+    
+
+	/*** Select Sample/Conversion Sequence ***/
+	// use auto-convert
+	_SSRC = 0b0111;		// AD1CON1<7:4>, pg. 211 datasheet
+	// use auto-sample
+	_ASAM = 1;			// AD1CON1<2>
+	// choose a sample time >= 1 Tad, see Table 29-41 datasheet
+	_SAMC = 0b00001;		// AD1CON3<12:8>
+
+
+	/*** Choose Analog Channels to be Used ***/
+	// scan inputs
+	_CSCNA = 1;			// AD1CON2<10>
+	// choose which channels to scan, e.g. for ch AN12, set _CSS12 = 1;
+	_CSS14 = 1;			// AD1CSSH/L, pg. 217  // I used _CSS14 because pin 8 is reading in the analog signal, and the analog channel for pin 8 is AN14
+    
+
+
+	/*** Select How Results are Presented in Buffer ***/
+	// set 12-bit resolution
+	_MODE12 = 1;		// AD1CON1<10>
+	// use absolute decimal format
+	_FORM = 0b00;			// AD1CON1<9:8>
+	// load results into buffer determined by converted channel, e.g. ch AN12 
+    // results appear in ADC1BUF12
+	_BUFREGEN = 1;		// AD1CON2<11>
+
+
+	/*** Select Interrupt Rate ***/
+	// interrupt rate should reflect number of analog channels used, e.g. if 
+    // 5 channels, interrupt every 5th sample
+	_SMPI = 0b00001;		// AD1CON2<6:2> // Interrupts at the completion of the conversion for every other sample of 0b00001--Comment added by Spencer
+
+
+	/*** Turn on A/D Module ***/
+	_ADON = 1;			// AD1CON1<15>
+    
+    int something = (1/3.3)*4095;
+    while(1)
+    {
+        if (ADC1BUF14 > something)
+        {
+            _LATA2 = 1;
+        }
+        else
+        {
+            _LATA2 = 0;
+        }
+    }
+}
 
 void configTimer2() {
     
