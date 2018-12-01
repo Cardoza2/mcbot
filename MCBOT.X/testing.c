@@ -39,8 +39,8 @@ void configPins() {
     _ANSB2 = 1; //Pin 6 IR sensor 
     _TRISA2 = 0; // pin 7 QRD1114 led line
     _ANSA2 = 0; //pin 7 disable analog (AN13)
-    _TRISA3 = 1; //pin 8 QRD1114 analog line
-    _ANSA3 =1; //pin 8 enable analog (AN14)
+    //_TRISA3 = 1; //pin 8 QRD1114 analog line
+    _ANSA3 = 1; //pin 8 enable analog (AN14)
     
     
     _TRISB7 = 0; //pin 11 debugging LED 
@@ -74,12 +74,12 @@ void turnRight() {
     _LATB9 = 1;
 }
 
-void findGoal() {
+void findDispenser() {
     turnRight();
     while(ADC1BUF14 < IRthreshold) {}
-    _LATB7 = 1; 
+    //_LATB7 = 1;   //Test LED
     stopDriving();
-    next = 1;
+    driveForward();
 }
 
 void _ISR _OC1Interrupt(void)
@@ -240,7 +240,7 @@ void configAtoD() {
 	_ADON = 1;			// AD1CON1<15>
 }
 
-void configcolor() {
+void configColorSensor() {
     // This code was taken from lab 6
     // for the Color sensor pins 7 and 8 will be used (A2=pin 7 and will be used for the led) (A3=pin 8 and will be used for the analog line)
     // The only thing different from the Lab 6 code is the pin configuration

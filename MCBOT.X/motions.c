@@ -22,3 +22,27 @@ void raiseLift() {
          }
     }
 }
+
+void findDispenser() {
+    turnRight();
+    while(ADC1BUF14 < IRthreshold) {}
+    //_LATB7 = 1;   //Test LED
+    stopDriving();
+    driveForward();
+}
+
+void sort(char color) {
+    if (color == 'b') {
+        OC3R = 400;
+    }
+    else if (color == 'w') {
+        OC3R = 700;
+    }
+    else {
+        OC3R = 560;
+    }
+}
+
+char senseColor() {
+    
+}
