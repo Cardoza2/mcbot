@@ -14,12 +14,12 @@
 #pragma config FNOSC = FRC       // 8 MHz FRC oscillator
 
 
-//enum asdf {start, sorting, score, end}; //lists the possible states
+enum asdf {start, sorting, end}; //lists the possible states
 int numSorted = 0;
 int IRthreshold = 3000;
 bool driving = false;    //true means we are driving, false means we've stopped
 int counter = 0;
-int state = 0;
+//int state = 0;
 
 void configTimer2() {
     
@@ -330,15 +330,15 @@ int main(void) {
     config_PWM_3();     //sorting servo
     configAtoD();       //both color and IR sensors
     configTimer2();     //sorting servo
-    //asdf state = start; //possibly start in the findDispenser state?
+    enum asdf state = start; //possibly start in the findDispenser state?
     while(1)
     {
         switch (state) {
-            case 0:
+            case start:
                 findDispenser();
-                state = 1;
+                state = sorting;
                 break;
-            case 1:
+            case sorting:
                 _LATA2 = 1;         //turn on IR LED
                 while(numSorted < 4) {
                     _LATB14 = 1;     //turn on trigger LED
@@ -346,10 +346,12 @@ int main(void) {
                     _LATB14 = 0;    //Turn LED off
                     OC3R = 560;     //Return sorting arm to middle
                 }
-                state = 2;
+                state = end;
                 break;
-            case 2:
+            case end:
                 return 0;
+                break;
+            default:
                 break;
         }
     }

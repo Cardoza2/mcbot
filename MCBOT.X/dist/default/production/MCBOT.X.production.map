@@ -59,20 +59,20 @@ xc16-ld 1.35 (A)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x104           0x186  (390)
-.text                        0x304               0x1f8           0x2f4  (756)
-.dinit                       0x4fc                0x10            0x18  (24)
+.text                        0x304               0x232           0x34b  (843)
+.dinit                       0x536                0x10            0x18  (24)
 
-                 Total "program" memory used (bytes):          0x492  (1170) 7%
+                 Total "program" memory used (bytes):          0x4e9  (1257) 7%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0x8  (8)
-.ndata                       0x808                   0             0x2  (2)
+.nbss                        0x800                   0             0x6  (6)
+.ndata                       0x806                   0             0x2  (2)
 
-                 Total "data" memory used (bytes):            0xa  (10) <1%
+                 Total "data" memory used (bytes):            0x8  (8) <1%
 
 
 Dynamic Memory Usage
@@ -80,9 +80,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x80a                               0x7f6  (2038)
+stack                        0x808                               0x7f8  (2040)
 
-                 Maximum dynamic memory (bytes):          0x7f6  (2038)
+                 Maximum dynamic memory (bytes):          0x7f8  (2040)
 
 
 External Symbols in Data Memory (by address):
@@ -90,16 +90,14 @@ External Symbols in Data Memory (by address):
                     0x0800                  _numSorted
                     0x0802                  _driving
                     0x0804                  _counter
-                    0x0806                  _state
-                    0x0808                  _IRthreshold
+                    0x0806                  _IRthreshold
 
 External Symbols in Data Memory (by name):
 
-                    0x0808                  _IRthreshold
+                    0x0806                  _IRthreshold
                     0x0804                  _counter
                     0x0802                  _driving
                     0x0800                  _numSorted
-                    0x0806                  _state
 
 External Symbols in Program Memory (by address):
 
@@ -115,14 +113,15 @@ External Symbols in Program Memory (by address):
                   0x00038c                  _configCNInterrupt
                   0x0003a6                  _configPins
                   0x0003da                  _config_PWM_3
-                  0x000406                  _driveForward
-                  0x00041a                  _turnRight
-                  0x000424                  _stopDriving
-                  0x00042e                  _raiseLift
-                  0x000440                  _findDispenser
-                  0x000458                  _sort
-                  0x00048c                  _senseColor
-                  0x0004b4                  _main
+                  0x000406                  _config_PWM_1
+                  0x000436                  _driveForward
+                  0x00044c                  _turnRight
+                  0x00045c                  _stopDriving
+                  0x000466                  _raiseLift
+                  0x000478                  _findDispenser
+                  0x000490                  _sort
+                  0x0004c4                  _senseColor
+                  0x0004ec                  _main
 
 External Symbols in Program Memory (by name):
 
@@ -137,15 +136,16 @@ External Symbols in Program Memory (by name):
                   0x0003a6                  _configPins
                   0x00031c                  _configTimer1
                   0x000304                  _configTimer2
+                  0x000406                  _config_PWM_1
                   0x0003da                  _config_PWM_3
-                  0x000406                  _driveForward
-                  0x000440                  _findDispenser
-                  0x0004b4                  _main
-                  0x00042e                  _raiseLift
-                  0x00048c                  _senseColor
-                  0x000458                  _sort
-                  0x000424                  _stopDriving
-                  0x00041a                  _turnRight
+                  0x000436                  _driveForward
+                  0x000478                  _findDispenser
+                  0x0004ec                  _main
+                  0x000466                  _raiseLift
+                  0x0004c4                  _senseColor
+                  0x000490                  _sort
+                  0x00045c                  _stopDriving
+                  0x00044c                  _turnRight
 
 Memory Configuration
 
@@ -250,26 +250,26 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x25d1
+.debug_info       0x000000       0x29fe
  *(.debug_info)
- .debug_info      0x000000       0x25d1 build/default/production/MS11.o
+ .debug_info      0x000000       0x29fe build/default/production/MS11.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x1a3
+.debug_abbrev     0x000000        0x1e5
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x1a3 build/default/production/MS11.o
+ .debug_abbrev    0x000000        0x1e5 build/default/production/MS11.o
 
-.debug_line       0x000000        0x18e
+.debug_line       0x000000        0x1a2
  *(.debug_line)
- .debug_line      0x000000        0x18e build/default/production/MS11.o
+ .debug_line      0x000000        0x1a2 build/default/production/MS11.o
 
-.debug_frame      0x000000        0x1dc
+.debug_frame      0x000000        0x1f8
  *(.debug_frame)
- .debug_frame     0x000000        0x1dc build/default/production/MS11.o
+ .debug_frame     0x000000        0x1f8 build/default/production/MS11.o
 
-.debug_str        0x000000        0x108
+.debug_str        0x000000        0x168
  *(.debug_str)
- .debug_str       0x000000        0x108 build/default/production/MS11.o
+ .debug_str       0x000000        0x168 build/default/production/MS11.o
 
 .debug_loc
  *(.debug_loc)
@@ -278,10 +278,10 @@ __FDS
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x13a
+                  0x000000        0x141
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000        0x13a build/default/production/MS11.o
+                  0x000000        0x141 build/default/production/MS11.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -909,29 +909,28 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000018        0x2ec
+                  0x000018        0x33b
  .debug_pubtypes
-                  0x000018        0x2ec build/default/production/MS11.o
+                  0x000018        0x33b build/default/production/MS11.o
 
 __c30_signature
-                  0x000304         0x12
+                  0x000353         0x12
  __c30_signature
-                  0x000304          0x6 build/default/production/MS11.o
+                  0x000353          0x6 build/default/production/MS11.o
  __c30_signature
-                  0x00030a          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x000359          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x000310          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x00035f          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
 
-.nbss               0x0800          0x8
- .nbss              0x0800          0x8 build/default/production/MS11.o
+.nbss               0x0800          0x6
+ .nbss              0x0800          0x6 build/default/production/MS11.o
                     0x0800                  _numSorted
                     0x0802                  _driving
                     0x0804                  _counter
-                    0x0806                  _state
 
-.ndata              0x0808          0x2
- .ndata             0x0808          0x2 build/default/production/MS11.o
-                    0x0808                  _IRthreshold
+.ndata              0x0806          0x2
+ .ndata             0x0806          0x2 build/default/production/MS11.o
+                    0x0806                  _IRthreshold
 
 .config_IESO      0xf80006          0x2
  .config_IESO     0xf80006          0x2 build/default/production/MS11.o
@@ -941,22 +940,23 @@ __c30_signature
  .ivt._CNInterrupt
                   0x00003a          0x2 build/default/production/MS11.o
 
-.text             0x000304        0x1f8
- .text            0x000304        0x1f8 build/default/production/MS11.o
+.text             0x000304        0x232
+ .text            0x000304        0x232 build/default/production/MS11.o
                   0x000304                  _configTimer2
                   0x00031c                  _configTimer1
                   0x000342                  _configAtoD
                   0x00038c                  _configCNInterrupt
                   0x0003a6                  _configPins
                   0x0003da                  _config_PWM_3
-                  0x000406                  _driveForward
-                  0x00041a                  _turnRight
-                  0x000424                  _stopDriving
-                  0x00042e                  _raiseLift
-                  0x000440                  _findDispenser
-                  0x000458                  _sort
-                  0x00048c                  _senseColor
-                  0x0004b4                  _main
+                  0x000406                  _config_PWM_1
+                  0x000436                  _driveForward
+                  0x00044c                  _turnRight
+                  0x00045c                  _stopDriving
+                  0x000466                  _raiseLift
+                  0x000478                  _findDispenser
+                  0x000490                  _sort
+                  0x0004c4                  _senseColor
+                  0x0004ec                  _main
 
-.dinit            0x0004fc         0x10
- .dinit           0x0004fc         0x10 data_init
+.dinit            0x000536         0x10
+ .dinit           0x000536         0x10 data_init
