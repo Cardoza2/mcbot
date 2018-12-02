@@ -236,24 +236,28 @@ void config_PWM_1() {
     _OC1IE = 1; //ENABLES YOUR INTERRUPT
    // _OC1IF = 0; // eNABLES iNTERRUPT FLAG
     
-
+    _LATB15 = 0;    //driver sleep set so wheels don't turn
 }
 
 void driveForward() {
     driving = true;    //sets boolean
+    _LATB15 = 1;    //Disables sleep so wheels can turn
     _LATB8 = 1;
     _LATB13 = 0;
     while(driving) {}   //switches in stopDriving function
 }
 
 void turnRight() {
+    driving = true; 
+    _LATB15 = 1;    //Disables sleep so wheels can turn
     _LATB8 = 1;
     _LATB13 = 1;
 }
 
 void stopDriving() {
     driving = false;     //used in driveForward function
-    OC1R = 0;            //Sets driving stepper duty cycle 
+    //OC1R = 0;            //Sets driving stepper duty cycle 
+    _LATB15 = 0;    //Enables sleep
 }
 
 void raiseLift() {
