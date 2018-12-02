@@ -335,6 +335,7 @@ int main(void) {
     {
         switch (state) {
             case start:
+                _LATB7 = 1;     //testing LED
                 findDispenser();
                 state = sorting;
                 break;
