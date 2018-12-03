@@ -36,7 +36,7 @@ void configPins() {
     //_ANSB1 = 0;
     /// Does PWM need the analog disabled?
     _TRISB2 = 1; //Pin 6 An4 IR sensor  
-    _ANSB2 = 1; //Pin 6 IR sensor 
+    _ANSB2 = 1; //Pin 6 IR sensor (AN4)
     _TRISA2 = 0; // pin 7 QRD1114 led line
     _ANSA2 = 0; //pin 7 disable analog (AN13)
     //_TRISA3 = 1; //pin 8 QRD1114 analog line
@@ -45,7 +45,7 @@ void configPins() {
     
     _TRISB7 = 0; //pin 11 debugging LED 
     _TRISB8 = 0; //pin 12 Drive Stepper direction 
-    _TRISB9 = 0; //pin 13 Drive Stepper direction pin 13
+    _TRISB9 = 0; //pin 13 Drive Stepper direction
     _TRISA6 = 0; //pin 14 Drive PWM Output pin 14
     //// Does the PWM need to have the analog disabled? 
     _TRISB12 = 1; //pin 15 Front Bumpers pin 15
@@ -54,7 +54,7 @@ void configPins() {
     _ANSB13 = 0; //pin 16 disable analog
     _TRISB14 = 0; // pin 17 Trigger LED
     _ANSB14 = 0; //pin 17 analog off 
-    _TRISB15 = 0; // pin 18 Drive stepper sleep
+    _TRISB15 = 0; // pin 18 Drive stepper sleep 
     _ANSB15 = 0; //pin 18 disable analog
 }
 

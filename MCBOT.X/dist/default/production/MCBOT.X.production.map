@@ -50,6 +50,8 @@ g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.
                               g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o) (__data_init_standard)
 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
                               (__crt_start_mode_normal)
+g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                              build/default/production/MS11.o (___delay32)
 
 
 xc16-ld 1.35 (A)
@@ -58,11 +60,12 @@ xc16-ld 1.35 (A)
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200               0x104           0x186  (390)
-.text                        0x304               0x232           0x34b  (843)
-.dinit                       0x536                0x10            0x18  (24)
+.text                        0x200               0x108           0x18c  (396)
+.text                        0x308               0x1e8           0x2dc  (732)
+.init.delay32                0x4f0                0x1c            0x2a  (42)
+.dinit                       0x50c                0x10            0x18  (24)
 
-                 Total "program" memory used (bytes):          0x4e9  (1257) 7%
+                 Total "program" memory used (bytes):          0x4aa  (1194) 7%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -103,49 +106,43 @@ External Symbols in Program Memory (by address):
 
                   0x000200                  __resetPRI
                   0x00023c                  __psv_init
-                  0x000252                  __data_init_standard
                   0x000252                  __data_init
+                  0x000252                  __data_init_standard
                   0x0002c8                  __CNInterrupt
-                  0x0002fe                  __DefaultInterrupt
-                  0x000304                  _configTimer2
-                  0x00031c                  _configTimer1
-                  0x000342                  _configAtoD
-                  0x00038c                  _configCNInterrupt
-                  0x0003a6                  _configPins
-                  0x0003da                  _config_PWM_3
-                  0x000406                  _config_PWM_1
-                  0x000436                  _driveForward
-                  0x00044c                  _turnRight
-                  0x00045c                  _stopDriving
-                  0x000466                  _raiseLift
-                  0x000478                  _findDispenser
-                  0x000490                  _sort
-                  0x0004c4                  _senseColor
-                  0x0004ec                  _main
+                  0x000302                  __DefaultInterrupt
+                  0x000308                  _configTimer2
+                  0x000322                  _configCNInterrupt
+                  0x00033c                  _configPins
+                  0x000370                  _configAtoD
+                  0x0003bc                  _config_PWM_3
+                  0x0003e8                  _config_PWM_1
+                  0x000416                  _driveForward
+                  0x000430                  _turnRight
+                  0x000440                  _stopDriving
+                  0x00044c                  _findDispenser
+                  0x000466                  _main
+                  0x0004f0                  ___delay32
 
 External Symbols in Program Memory (by name):
 
                   0x0002c8                  __CNInterrupt
-                  0x0002fe                  __DefaultInterrupt
+                  0x000302                  __DefaultInterrupt
+                  0x0004f0                  ___delay32
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x000342                  _configAtoD
-                  0x00038c                  _configCNInterrupt
-                  0x0003a6                  _configPins
-                  0x00031c                  _configTimer1
-                  0x000304                  _configTimer2
-                  0x000406                  _config_PWM_1
-                  0x0003da                  _config_PWM_3
-                  0x000436                  _driveForward
-                  0x000478                  _findDispenser
-                  0x0004ec                  _main
-                  0x000466                  _raiseLift
-                  0x0004c4                  _senseColor
-                  0x000490                  _sort
-                  0x00045c                  _stopDriving
-                  0x00044c                  _turnRight
+                  0x000370                  _configAtoD
+                  0x000322                  _configCNInterrupt
+                  0x00033c                  _configPins
+                  0x000308                  _configTimer2
+                  0x0003e8                  _config_PWM_1
+                  0x0003bc                  _config_PWM_3
+                  0x000416                  _driveForward
+                  0x00044c                  _findDispenser
+                  0x000466                  _main
+                  0x000440                  _stopDriving
+                  0x000430                  _turnRight
 
 Memory Configuration
 
@@ -195,7 +192,7 @@ LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200        0x104
+.text             0x000200        0x108
  *(.init)
  .init            0x000200         0x4c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
                   0x000200                  __resetPRI
@@ -207,18 +204,18 @@ LOAD g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\libfx-elf.a
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002c8         0x36 build/default/production/MS11.o
+ .isr.text        0x0002c8         0x3a build/default/production/MS11.o
                   0x0002c8                  __CNInterrupt
- .isr             0x0002fe          0x4 default_isr
-                  0x0002fe                  __DefaultInterrupt
+ .isr             0x000302          0x4 default_isr
+                  0x000302                  __DefaultInterrupt
  *(.libc)
  *(.libm)
  *(.libdsp)
  *(.lib*)
  .libpic30_crt_start_mode
-                  0x000302          0x2 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
-                  0x000302                  __crt_start_mode
-                  0x000302                  __crt_start_mode_normal
+                  0x000306          0x2 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
+                  0x000306                  __crt_start_mode
+                  0x000306                  __crt_start_mode_normal
 
 usercode
  *(usercode)
@@ -250,26 +247,26 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x29fe
+.debug_info       0x000000       0x2213
  *(.debug_info)
- .debug_info      0x000000       0x29fe build/default/production/MS11.o
+ .debug_info      0x000000       0x2213 build/default/production/MS11.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x1e5
+.debug_abbrev     0x000000        0x190
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x1e5 build/default/production/MS11.o
+ .debug_abbrev    0x000000        0x190 build/default/production/MS11.o
 
-.debug_line       0x000000        0x1a2
+.debug_line       0x000000        0x198
  *(.debug_line)
- .debug_line      0x000000        0x1a2 build/default/production/MS11.o
+ .debug_line      0x000000        0x198 build/default/production/MS11.o
 
-.debug_frame      0x000000        0x1f8
+.debug_frame      0x000000        0x188
  *(.debug_frame)
- .debug_frame     0x000000        0x1f8 build/default/production/MS11.o
+ .debug_frame     0x000000        0x188 build/default/production/MS11.o
 
-.debug_str        0x000000        0x168
+.debug_str        0x000000        0x12f
  *(.debug_str)
- .debug_str       0x000000        0x168 build/default/production/MS11.o
+ .debug_str       0x000000        0x12f build/default/production/MS11.o
 
 .debug_loc
  *(.debug_loc)
@@ -278,10 +275,10 @@ __FDS
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x141
+                  0x000000        0x10a
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000        0x141 build/default/production/MS11.o
+                  0x000000        0x10a build/default/production/MS11.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -909,18 +906,20 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x000018        0x33b
+                  0x000018        0x29f
  .debug_pubtypes
-                  0x000018        0x33b build/default/production/MS11.o
+                  0x000018        0x29f build/default/production/MS11.o
 
 __c30_signature
-                  0x000353         0x12
+                  0x0002b7         0x18
  __c30_signature
-                  0x000353          0x6 build/default/production/MS11.o
+                  0x0002b7          0x6 build/default/production/MS11.o
  __c30_signature
-                  0x000359          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x0002bd          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x00035f          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x0002c3          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+ __c30_signature
+                  0x0002c9          0x6 g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
 
 .nbss               0x0800          0x6
  .nbss              0x0800          0x6 build/default/production/MS11.o
@@ -940,23 +939,23 @@ __c30_signature
  .ivt._CNInterrupt
                   0x00003a          0x2 build/default/production/MS11.o
 
-.text             0x000304        0x232
- .text            0x000304        0x232 build/default/production/MS11.o
-                  0x000304                  _configTimer2
-                  0x00031c                  _configTimer1
-                  0x000342                  _configAtoD
-                  0x00038c                  _configCNInterrupt
-                  0x0003a6                  _configPins
-                  0x0003da                  _config_PWM_3
-                  0x000406                  _config_PWM_1
-                  0x000436                  _driveForward
-                  0x00044c                  _turnRight
-                  0x00045c                  _stopDriving
-                  0x000466                  _raiseLift
-                  0x000478                  _findDispenser
-                  0x000490                  _sort
-                  0x0004c4                  _senseColor
-                  0x0004ec                  _main
+.text             0x000308        0x1e8
+ .text            0x000308        0x1e8 build/default/production/MS11.o
+                  0x000308                  _configTimer2
+                  0x000322                  _configCNInterrupt
+                  0x00033c                  _configPins
+                  0x000370                  _configAtoD
+                  0x0003bc                  _config_PWM_3
+                  0x0003e8                  _config_PWM_1
+                  0x000416                  _driveForward
+                  0x000430                  _turnRight
+                  0x000440                  _stopDriving
+                  0x00044c                  _findDispenser
+                  0x000466                  _main
 
-.dinit            0x000536         0x10
- .dinit           0x000536         0x10 data_init
+.init.delay32     0x0004f0         0x1c
+ .init.delay32    0x0004f0         0x1c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x0004f0                  ___delay32
+
+.dinit            0x00050c         0x10
+ .dinit           0x00050c         0x10 data_init
