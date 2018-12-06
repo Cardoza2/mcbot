@@ -393,6 +393,7 @@ int main() {
     configTimer2();
     configPins();
     config_PWM_3();
+    
     while(1) {
         OC3R = 560;
         __delay_ms(3000);
