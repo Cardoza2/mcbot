@@ -216,8 +216,6 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="experiment.c" ex="true" overriding="false">
-      </item>
       <item path="interrupts.c" ex="true" overriding="false">
         <C30>
         </C30>
@@ -266,7 +264,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="testing.c" ex="false" overriding="false">
+      <item path="testing.c" ex="true" overriding="false">
         <C30>
         </C30>
         <C30-AR>

@@ -11,14 +11,7 @@
 #define FCY 4000000UL       //needed for delay function
 #include <libpic30.h>       //needed for delay function
 
-enum asdf {start, sort, score, scoring, end}; //lists the possible states
-int numSorted = 0;
-int IRthreshold = 3000;
-bool driving = false;    //true means we are driving, false means we've stopped
 int liftingCounter = 0;
-int drivingCounter = 0;
-int middle = 5000;
-int turn180 = 1000;
 
 void configPins() {
     _TRISA0 = 0; //pin 2 Lift Sleep
@@ -55,9 +48,6 @@ void configPins() {
 
 void _ISR _OC2Interrupt(void) {
     liftingCounter++;
-//   if (counter > 600) {
-//       counter = 0;
-//   }
    
     _OC2IF = 0; // eNABLES iNTERRUPT FLAG
 }
@@ -117,25 +107,28 @@ int main(void) {
     configPins();
     config_PWM_2();
 
-     _LATA0 = 0;     //disable sleep
+     _LATA0 = 1;     //disable sleep
      _LATA1 = 1;    //1 is up
+    
      
     while(1) {
-        if (counter > 350) {        //350 is a good number for the lifter
-            _LATA0 = 1;     //sleep
+        _LATB7 = 1;     //testing LED
+        if (liftingCounter > 350) {        //350 is a good number for the lifter
+             _LATB7 = 0;     //testing LED
+            _LATA0 = 0;     //sleep
             __delay_ms(2000);
             _LATA1 = 0;     //0 is down
             while(1) {
-                _LATA0 = 0;     //disables sleep
+                //_LATB7 = 0;     //testing LED
+                _LATA0 = 1;     //disables sleep
                 liftingCounter = 0;
                 if (liftingCounter > 350) {
+                    _LATB7 = 1;     //testing LED
+                    _LATA0 = 0;
                     while(1) {}
                 }
             }
         }
-//            //__delay_ms(1000); 
-//            //_LATA1 = 1 - _RA1;
-//        }
     }
 
     return 0;
