@@ -61,10 +61,17 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void)
 
 void _ISR _OC2Interrupt(void)
 {
-    counter++;
-   if (counter > 600) {
-       counter = 0;
-   }
+    liftingCounter++;
+//   if (counter > 600) {
+//       counter = 0;
+//   }
    
+    _OC2IF = 0; // eNABLES iNTERRUPT FLAG
+}
+
+void _ISR _OC1Interrupt(void)
+{
+    drivingCounter++;
+    
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
 }

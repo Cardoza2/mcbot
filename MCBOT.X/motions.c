@@ -12,6 +12,21 @@ void driveForward() {
     while(driving) {}   //switches in stopDriving function
 }
 
+void driveBackward() {
+    drivingCounter = 0;
+    driving = true;
+    _LATB8 = 0;
+    _LATB13 = 1;
+    while(drivingCounter > middle) {}   //drives backward until the middle
+}
+
+void turn180() {
+    drivingCounter = 0;
+    _LATB8 = 1;
+    _LATB13 = 1;
+    while (drivingCounter > turn180) {} //turns a 180
+}
+
 void turnRight() {
     _LATB8 = 1;
     _LATB13 = 1;
