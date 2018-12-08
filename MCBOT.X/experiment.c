@@ -241,8 +241,8 @@ void config_PWM_1() {
     
    
     
-    //_OC1IE = 1; //ENABLES YOUR INTERRUPT
-   // _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+    _OC1IE = 1; //ENABLES YOUR INTERRUPT
+    _OC1IF = 0; // eNABLES iNTERRUPT FLAG
     
     _LATB15 = 0;    //driver sleep set so wheels don't turn
 }

@@ -35,13 +35,16 @@
 
 #include "xc.h"
 #include <stdbool.h>  //need for bool
+#include "motions.c"
+#include "config.c"
+#include "interrupts.c"
 
 // Select oscillator
 #pragma config FNOSC = FRC       // 8 MHz FRC oscillator
 
 
 
-enum asdf {start, sort, score, end}; //lists the possible states
+enum asdf {start, sort, score, scoring, end}; //lists the possible states
 int numSorted = 0;
 int IRthreshold = 3000;
 bool driving = false;    //true means we are driving, false means we've stopped
@@ -68,7 +71,11 @@ int main()
                     _LATB14 = 0;    //Turn LED off
                     OC3R = 560;     //Return sorting arm to middle
                 }
+                _LATA2 = 0;         //turn off IR LED
                 state = end;
+                break;
+            case scoring:
+                driveForward();
                 break;
             case end:
                 return 0;

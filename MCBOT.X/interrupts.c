@@ -59,3 +59,12 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void)
     else {}                 //leaving corner
 }
 
+void _ISR _OC2Interrupt(void)
+{
+    counter++;
+   if (counter > 600) {
+       counter = 0;
+   }
+   
+    _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+}

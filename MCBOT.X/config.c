@@ -113,7 +113,7 @@ void configPins() {
     _TRISB8 = 0; //pin 12 Drive Stepper direction 
     _TRISB9 = 0; //pin 13 Drive Stepper direction pin 13
     _TRISA6 = 0; //pin 14 Drive PWM Output pin 14
-    //// Does the PWM need to have the analog disabled? 
+    //// Does the PWM need to have the analog disabled? no
     _TRISB12 = 1; //pin 15 Front Bumpers pin 15
     _ANSB12 = 0; // pin 15 disable analog
     _TRISB13 = 1; //pin 16 Rear bumpers pin 16
@@ -219,6 +219,55 @@ void config_PWM_1() {
     
     _OC1IE = 1; //ENABLES YOUR INTERRUPT
    // _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+    
+
+}
+
+void config_PWM_2() {
+      //-----------------------------------------------------------
+    // CONFIGURE PWM2 USING OC2 (on pin 4)
+    
+    // Clear control bits initially
+    OC2CON1 = 0;
+    OC2CON2 = 0;
+    
+  
+    // Set period and duty cycle
+    OC2R = 3990;                // Set Output Compare value to achieve
+                                // desired duty cycle. This is the number
+                                // of timer counts when the OC should send
+                                // the PWM signal low. The duty cycle as a
+                                // fraction is OC1R/OC1RS.
+    OC2RS = 15000;               // Period of OC1 to achieve desired PWM 
+                                // frequency, FPWM. See Equation 15-1
+                                // in the datasheet. For example, for
+                                // FPWM = 1 kHz, OC1RS = 3999. The OC1RS 
+                                // register contains the period when the
+                                // SYNCSEL bits are set to 0x1F (see FRM)
+    
+ 
+    
+    // Configure OC2
+    OC2CON1bits.OCTSEL = 0b111; // System (peripheral) clock as timing source
+    OC2CON2bits.SYNCSEL = 0x1F; // Select OC1 as synchronization source
+                                // (self synchronization) -- Although we
+                                // selected the system clock to determine
+                                // the rate at which the PWM timer increments,
+                                // we could have selected a different source
+                                // to determine when each PWM cycle initiates.
+                                // From the FRM: When the SYNCSEL<4:0> bits
+                                // (OCxCON2<4:0>) = 0b11111, they make the
+                                // timer reset when it reaches the value of
+                                // OCxRS, making the OCx module use its
+                                // own Sync signal.
+    OC2CON2bits.OCTRIG = 0;     // Synchronizes with OC1 source instead of
+                                // triggering with the OC1 source
+    OC2CON1bits.OCM = 0b110;    // Edge-aligned PWM mode
+    
+   
+    
+    _OC2IE = 1; //ENABLES YOUR INTERRUPT
+    _OC2IF = 0; // eNABLES iNTERRUPT FLAG
     
 
 }
