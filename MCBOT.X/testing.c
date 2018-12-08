@@ -19,14 +19,14 @@
 
 //Global Variables
 //*************************************************
-enum asdf {start, sort, score, scoring, end}; //lists the possible states
+enum asdf {start, sorting, score, scoring, end}; //lists the possible states
 int numSorted = 0;
 int IRthreshold = 3000;
 bool driving = false;    //true means we are driving, false means we've stopped
 int liftingCounter = 0;
 int drivingCounter = 0;
-int middle = 5000;
-int turn180 = 1000;
+int middle = 530;
+int clicksTo180 = 340;
 
 //*************************************************
 
@@ -114,25 +114,6 @@ void _ISR _OC2Interrupt(void) {
     _OC2IF = 0; // eNABLES iNTERRUPT FLAG
 }
 
-void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
-
-    // Remember to clear the CN interrupt flag when
-    // this ISR is entered.
-    _CNIF = 0; // Clear interrupt flag
-
-    // Place in this ISR whatever code should be executed
-    // when a change in the button state is detected.
-    // You will need to write code to distinguish between
-    // a button press and a button release.
-    if (_RB12 == 1) {       //Forward corner
-        stopDriving();
-    }
-    else if (_RB13 == 1){   //Back corner
-        stopDriving();
-    }
-    else {}                 //leaving corner
-}
-
 void configAtoD() {
         /*** Select Voltage Reference Source ***/
 	// use AVdd for positive reference
@@ -176,7 +157,7 @@ void configAtoD() {
 	/*** Select Interrupt Rate ***/
 	// interrupt rate should reflect number of analog channels used, e.g. if 
     // 5 channels, interrupt every 5th sample
-	_SMPI = 0b00002;		// AD1CON2<6:2>
+	_SMPI = 0b00010;		// AD1CON2<6:2>
 
 
 	/*** Turn on A/D Module ***/
@@ -229,7 +210,7 @@ void config_PWM_1() {
     _OC1IE = 1; //ENABLES YOUR INTERRUPT
    // _OC1IF = 0; // eNABLES iNTERRUPT FLAG
     
-
+_LATB15 = 0;    //sleep
 }
 
 void config_PWM_2() {
@@ -277,7 +258,7 @@ void config_PWM_2() {
     
     _OC2IE = 1; //ENABLES YOUR INTERRUPT
     _OC2IF = 0; // eNABLES iNTERRUPT FLAG
-    
+    _LATA0 = 0;     //sleep
     _LATA1 = 1;         //1 is up
 }
 
@@ -332,8 +313,9 @@ void config_PWM_3() {
 }
 
 void driveForward() {
+    _LATB15 = 1;    //disables sleep
     driving = true;    //sets boolean
-    _LATB8 = 1;
+    _LATB8 = 0;
     _LATB13 = 0;
     while(driving) {}   //switches in stopDriving function
 }
@@ -343,24 +325,26 @@ void driveBackward() {
     driving = true;
     _LATB8 = 0;
     _LATB13 = 1;
-    while(drivingCounter > middle) {}   //drives backward until the middle
+    while(drivingCounter < middle) {}   //drives backward until the middle
 }
 
 void turn180() {
     drivingCounter = 0;
     _LATB8 = 1;
     _LATB13 = 1;
-    while (drivingCounter > turn180) {} //turns a 180
+    while (drivingCounter < clicksTo180) {} //turns a 180
 }
 
 void turnRight() {
+    _LATB15 = 1;    //disable sleep
     _LATB8 = 1;
-    _LATB13 = 1;
+    _LATB9 = 1;
 }
 
 void stopDriving() {
     driving = false;     //used in driveForward function
-    OC1R = 0;            //Sets driving stepper duty cycle 
+    //OC1R = 0;            //Sets driving stepper duty cycle 
+    _LATB15 = 0;    //sleep
 }
 
 void raiseLift() {
@@ -408,6 +392,26 @@ char senseColor() {
     return color;
 }
 
+void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
+
+    __delay_ms(1000);
+    // Remember to clear the CN interrupt flag when
+    // this ISR is entered.
+    _CNIF = 0; // Clear interrupt flag
+
+    // Place in this ISR whatever code should be executed
+    // when a change in the button state is detected.
+    // You will need to write code to distinguish between
+    // a button press and a button release.
+    if (_RB12 == 1) {       //Forward corner
+        stopDriving();
+    }
+    else if (_RB13 == 1){   //Back corner
+        stopDriving();
+    }
+    else {}                 //leaving corner
+}
+
 int main() {
     
     configPins();
@@ -420,7 +424,7 @@ int main() {
     config_PWM_3();
     
     
-    asdf state = start;
+    enum asdf state = start;
     
     
     
@@ -429,9 +433,10 @@ int main() {
         switch (state) {
             case start:
                 findDispenser();
-                state = sort;
+                while(1) {}
+                state = sorting;
                 break;
-            case sort:
+            case sorting:
                 _LATA2 = 1;         //turn on IR LED
                 while(numSorted < 4) {
                     _LATB14 = 1;     //turn on trigger LED
