@@ -39,8 +39,7 @@ void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(void) {       //used f
 // micro knows the interrupt is from the one of the CN 
 // when the change notification interrupt flag (CNIF)
 // is set.
-void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void)
-{
+void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
 
     // Remember to clear the CN interrupt flag when
     // this ISR is entered.
@@ -59,18 +58,12 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void)
     else {}                 //leaving corner
 }
 
-void _ISR _OC2Interrupt(void)
-{
-    liftingCounter++;
-//   if (counter > 600) {
-//       counter = 0;
-//   }
-   
+void _ISR _OC2Interrupt(void) {
+    liftingCounter++;  
     _OC2IF = 0; // eNABLES iNTERRUPT FLAG
 }
 
-void _ISR _OC1Interrupt(void)
-{
+void _ISR _OC1Interrupt(void) {
     drivingCounter++;
     
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG

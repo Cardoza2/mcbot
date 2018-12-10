@@ -9,7 +9,7 @@ void configTimer2() {
     
     T2CONbits.TON = 1;      // turn on Timer1
     T2CONbits.TCS = 0;      // INTERNAL CLOCK
-    T2CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
+    T2CONbits.TCKPS = 0b01;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
     PR2 = 1000;      // TIMER PERIOD OF 155 is 50 Hz
     TMR2 = 0;     // RESET TIMER1 TO ZERO
     
@@ -55,7 +55,8 @@ void configAtoD() {
 	// scan inputs
 	_CSCNA = 1;			// AD1CON2<10>
 	// choose which channels to scan, e.g. for ch AN12, set _CSS12 = 1;
-	_CSS14 = 1;			// AD1CSSH/L, pg. 217
+	_CSS14 = 1;			// AD1CSSH/L, pg. 217   //QRD sensor
+    _CSS4 = 1;      //IR sensor
 
 
 
@@ -72,7 +73,7 @@ void configAtoD() {
 	/*** Select Interrupt Rate ***/
 	// interrupt rate should reflect number of analog channels used, e.g. if 
     // 5 channels, interrupt every 5th sample
-	_SMPI = 0b00002;		// AD1CON2<6:2>
+	_SMPI = 0b00010;		// AD1CON2<6:2>
 
 
 	/*** Turn on A/D Module ***/
@@ -82,7 +83,7 @@ void configAtoD() {
 void configCNInterrupt() {
     // Configure Change Notification interrupt
     // Set CN interrupt priority to 6
-    _CN5IE = 1; // Enable CN on pin 5 (CNEN1 register)
+    _CN14IE = 1; // Enable CN on pin 5 (CNEN1 register)
     _CN5PUE = 0; // Disable pull-up resistor (CNPU1 register)
     _CNIP = 6; // Set CN interrupt priority (IPC4 register)
     _CNIE = 1; // Enable CN interrupts (IEC1 register)
@@ -110,8 +111,8 @@ void configPins() {
     
     
     _TRISB7 = 0; //pin 11 debugging LED 
-    _TRISB8 = 0; //pin 12 Drive Stepper direction 
-    _TRISB9 = 0; //pin 13 Drive Stepper direction pin 13
+     _TRISB8 = 0; //pin 12 Drive Stepper direction (YELLOW)) 0 is forward
+    _TRISB9 = 0; //pin 13 Drive Stepper direction pin 13 (ORANGE)) 1 is forward
     _TRISA6 = 0; //pin 14 Drive PWM Output pin 14
     //// Does the PWM need to have the analog disabled? no
     _TRISB12 = 1; //pin 15 Front Bumpers pin 15
@@ -126,7 +127,7 @@ void configPins() {
 
 void config_PWM_3() {
       //-----------------------------------------------------------
-    // CONFIGURE PWM3 USING OC3 (on pin 5)
+    // CONFIGURE PWM3 USING OC3 (on pin 5) servo
     
     // Clear control bits initially
     OC3CON1 = 0;
@@ -218,7 +219,7 @@ void config_PWM_1() {
    
     
     _OC1IE = 1; //ENABLES YOUR INTERRUPT
-   // _OC1IF = 0; // eNABLES iNTERRUPT FLAG
+    _OC1IF = 0; // eNABLES iNTERRUPT FLAG
     
 
 }

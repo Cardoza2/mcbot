@@ -41,6 +41,7 @@
 
 // Select oscillator
 #pragma config FNOSC = FRC       // 8 MHz FRC oscillator
+#pragma config OSCIOFNC = OFF
 
 
 

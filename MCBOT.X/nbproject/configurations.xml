@@ -20,6 +20,8 @@
       <itemPath>lab 7.c</itemPath>
       <itemPath>MS11.c</itemPath>
       <itemPath>experiment.c</itemPath>
+      <itemPath>findDispensertest.c</itemPath>
+      <itemPath>MS12.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -218,6 +220,8 @@
       </item>
       <item path="experiment.c" ex="true" overriding="false">
       </item>
+      <item path="findDispensertest.c" ex="true" overriding="false">
+      </item>
       <item path="interrupts.c" ex="true" overriding="false">
         <C30>
         </C30>
@@ -266,7 +270,7 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="testing.c" ex="false" overriding="false">
+      <item path="testing.c" ex="true" overriding="false">
         <C30>
         </C30>
         <C30-AR>

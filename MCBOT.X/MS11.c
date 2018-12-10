@@ -140,7 +140,7 @@ void configAtoD() {
 	/*** Select Interrupt Rate ***/
 	// interrupt rate should reflect number of analog channels used, e.g. if 
     // 5 channels, interrupt every 5th sample
-	_SMPI = 0b00001;		// AD1CON2<6:2>
+	_SMPI = 0b00010;		// AD1CON2<6:2>
 
 
 	/*** Turn on A/D Module ***/

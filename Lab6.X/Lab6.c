@@ -39,7 +39,7 @@ int main(void) {
 	// scan inputs
 	_CSCNA = 1;			// AD1CON2<10>
 	// choose which channels to scan, e.g. for ch AN12, set _CSS12 = 1;
-	_CSS2 = 1;			// AD1CSSH/L, pg. 217
+	_CSS14 = 1;			// AD1CSSH/L, pg. 217
 
 
 
@@ -62,16 +62,22 @@ int main(void) {
 	/*** Turn on A/D Module ***/
 	_ADON = 1;			// AD1CON1<15>
     
-    int something = (1/3.3)*4095;
+    _TRISA2 = 0;
+    _TRISB7 = 0;
+    _TRISA3 = 1;
+    _ANSA3 = 1;
+    
+    double something = (1.7/3.3)*4095;
+    _LATA2 = 1;
     while(1)
     {
-        if (ADC1BUF2 > something)
+        if (ADC1BUF14 > something)
         {
-            _LATB1 = 1;
+            _LATB7 = 1;
         }
         else
         {
-            _LATB1 = 0;
+            _LATB7 = 0;
         }
     }
     

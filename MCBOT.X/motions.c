@@ -6,40 +6,47 @@
  */
 
 void driveForward() {
+    _LATB15 = 1;    //disables sleep
     driving = true;    //sets boolean
-    _LATB8 = 1;
+    _LATB8 = 0;
     _LATB13 = 0;
     while(driving) {}   //switches in stopDriving function
 }
 
 void driveBackward() {
+    //_LATB7 = 1;     //testing LED
     drivingCounter = 0;
-    driving = true;
-    _LATB8 = 0;
-    _LATB13 = 1;
-    while(drivingCounter > middle) {}   //drives backward until the middle
+    //driving = true;
+    _LATB8 = 1;
+    _LATB9 = 0;
+    while(drivingCounter < middle) {}   //drives backward until the middle
+    //_LATB7 = 0;     //testing LED
+    _LATB15 = 0;    //sleep
 }
 
 void turn180() {
     drivingCounter = 0;
     _LATB8 = 1;
-    _LATB13 = 1;
-    while (drivingCounter > turn180) {} //turns a 180
+    _LATB9 = 1;
+    while (drivingCounter < clicksTo180) {} //turns a 180 to the right
+    _LATB15 = 0;    //sleep
 }
 
 void turnRight() {
+    _LATB15 = 1;    //disable sleep
     _LATB8 = 1;
-    _LATB13 = 1;
+    _LATB9 = 1;
 }
 
 void stopDriving() {
     driving = false;     //used in driveForward function
-    OC1R = 0;            //Sets driving stepper duty cycle 
+    //OC1R = 0;            //Sets driving stepper duty cycle 
+    _LATB15 = 0;    //sleep
 }
 
 void raiseLift() {
     while(1) {
-         if (counter > 500 ) {
+         if (liftingCounter > 500 ) {
              _LATB13 = 0;
          }
     }
@@ -47,7 +54,7 @@ void raiseLift() {
 
 void findDispenser() {
     turnRight();
-    while(ADC1BUF14 < IRthreshold) {}
+    while(ADC1BUF4 < IRthreshold) {}
     //_LATB7 = 1;   //Test LED
     stopDriving();
     driveForward();
