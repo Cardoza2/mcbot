@@ -23,6 +23,7 @@
       <itemPath>findDispensertest.c</itemPath>
       <itemPath>MS12.c</itemPath>
       <itemPath>experiment2.c</itemPath>
+      <itemPath>compcode.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -205,6 +206,16 @@
         </C30Global>
       </item>
       <item path="MS12.c" ex="true" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
       </item>
       <PICkit3PlatformTool>
         <property key="firmware.download.all" value="false"/>
@@ -232,6 +243,8 @@
         </C30-LD>
         <C30Global>
         </C30Global>
+      </item>
+      <item path="experiment2.c" ex="true" overriding="false">
       </item>
       <item path="findDispensertest.c" ex="true" overriding="false">
         <C30>

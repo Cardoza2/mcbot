@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=experiment2.c
+SOURCEFILES_QUOTED_IF_SPACED=compcode.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/experiment2.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/experiment2.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/compcode.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/compcode.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/experiment2.o
+OBJECTFILES=${OBJECTDIR}/compcode.o
 
 # Source Files
-SOURCEFILES=experiment2.c
+SOURCEFILES=compcode.c
 
 
 CFLAGS=
@@ -94,20 +94,20 @@ MP_LINKER_FILE_OPTION=,--script=p24F16KA301.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/experiment2.o: experiment2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/compcode.o: compcode.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/experiment2.o.d 
-	@${RM} ${OBJECTDIR}/experiment2.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  experiment2.c  -o ${OBJECTDIR}/experiment2.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/experiment2.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/experiment2.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/compcode.o.d 
+	@${RM} ${OBJECTDIR}/compcode.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  compcode.c  -o ${OBJECTDIR}/compcode.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/compcode.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/compcode.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
-${OBJECTDIR}/experiment2.o: experiment2.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/compcode.o: compcode.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/experiment2.o.d 
-	@${RM} ${OBJECTDIR}/experiment2.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  experiment2.c  -o ${OBJECTDIR}/experiment2.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/experiment2.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/experiment2.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/compcode.o.d 
+	@${RM} ${OBJECTDIR}/compcode.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  compcode.c  -o ${OBJECTDIR}/compcode.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/compcode.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/compcode.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 
