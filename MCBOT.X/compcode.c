@@ -17,8 +17,10 @@
 int numSorted = 0;
 int blkSorted = 0;
 int whtSorted = 0;
+int balllimit = 8;
 int IRthreshold = 2450;     //3000 in actual arena 2450 with clicker
-int sorts = 0;
+int counts = 0;
+bool sorts = false;         // true or false if it needs to sort
 bool driving = false;    //true means we are driving, false means we've stopped
 bool creeping = false;  //creeping is designed to ignore the interrupt when we want to wedge into a corner
 int drivingCounter = 0;
@@ -27,7 +29,7 @@ int middle = 530;
 int clicksTo180 = 340;
 int black = 620;
 int white = 3700;
-enum asdf {start, sorting, decide, scoring, end}; //lists the possible states
+enum asdf {start, sorting, decide, score, end}; //lists the possible states
 
 
 void configPins() {
@@ -311,14 +313,14 @@ void driveForward() {
 
 void creepForward() {
     creeping = true;
-    OC1RS = 25000;
+    OC1RS = 1500;
     _LATB15 = 1;    //disables sleep
     driving = true;    //sets boolean
     _LATB8 = 0;
     _LATB9 = 1;
     drivingCounter = 0;
     while(drivingCounter < 300) {}   //switches in stopDriving function
-    OC1RS = 15000;
+    OC1RS = 4000;
     creeping = false;
 }
 
@@ -340,7 +342,7 @@ void driveBackward() {
     _LATB15 = 0;    //sleep
 }
 
-void findDispenser() {
+void findActive() {
     turnRight();
     while(ADC1BUF4 < IRthreshold) {}
     //_LATB7 = 0;   //Test LED
@@ -359,26 +361,34 @@ void turn180() {
 }
 
 void sort(char color) {
-    sorts = 1;
+    sorts = true;
+    counts = 0;
     _LATA2 = 1; //turn on QRD LED
-    // I tried doing this with a bool, but it told me that it couldn't resolve the identifier.
+    __delay_ms(200);
     while (sorts) {
         if (color == 'b') {
             OC3R = 400;
             numSorted++;
             blkSorted++;
-            sorts = 0;
+            sorts = false;
         } else if (color == 'w') {
             OC3R = 700;
             numSorted++;
             whtSorted++;
-            sorts = 0;
-        } else {
+            sorts = false;
+        } else if (counts==500){
+            _LATB14 = 0;
+            counts = 0;
+            __delay_ms(200);
+            _LATB14 = 1;
+        }else {
             OC3R = 560;
-            sorts = 1;
+            sorts = true;
+            counts++;
         }
     }
     
+    counts = 0;
     _LATA2 = 0; //Turn off QRD LED
 
 
@@ -404,16 +414,14 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
 
     // Remember to clear the CN interrupt flag when
     // this ISR is entered.
-    _CNIF = 0; // Clear interrupt flag
-
+    
     // Place in this ISR whatever code should be executed
     // when a change in the button state is detected.
     // You will need to write code to distinguish between
     // a button press and a button release.
-    
-    if (creeping) {
-        return;
-    }
+
+    __delay_ms(250);
+    _CNIF = 0; // Clear interrupt flag
     
     if (_RB12 == 1) {       //Forward corner
         stopDriving();
@@ -439,18 +447,20 @@ int main() {
     
     enum asdf state = start;
     
-    //enum asdf {start, sorting, decide, score_white, score_black, end}; //lists the possible states
+    //Delay to get your hands out of the way
+    __delay_ms(500);
+    
+    //enum asdf {start, sorting, decide, score, end}; //lists the possible states
             //Note, when switching states, the state doesn't switch until it has finished the case, then it changes to the case that matches the most 
                 //recent value for state.
     while(1){
         switch(state){
             case start:
                 /// Starting the round and getting us to the corner ///
-                findDispenser();
+                findActive();
                 __delay_ms(100);
-                creepForward();     ////???? Not exactly sure what needs to be done here.
-                stopDriving();      
-                    //Store location if we are using a location
+                driveForward();     ////???? Not exactly sure what needs to be done here.      
+                    //Store location if we are using a location???
                     
                 //Switch state to sorting       
                 state = sorting;
@@ -463,18 +473,13 @@ int main() {
                 OC3R = 560;
                 
                 //While loop to collect balls
-                while(whtSorted == 8 || blkSorted == 8){
-                    //Turn on light
-                    //Delay while ball falls
-                    //call sort function
+                while(whtSorted == balllimit || blkSorted == balllimit){
                     _LATB14 = 1;     //turn on trigger LED
-                    __delay_ms(100);
                     sort(senseColor());     //determines color and moves sorting arm
                     _LATB14 = 0;    //Turn LED off
                      OC3R = 560;     //Return sorting arm to middle
-                    
                 }
-                
+                driveBackward();
                 state = decide;
                 break;
                 
@@ -490,7 +495,7 @@ int main() {
                 
                 break;
                 
-            case score_white:
+            case score:
                 /// scoring based on color determined in deciding case
                 //drive forward until bumpers go off
                 //unsleep lift
@@ -504,9 +509,6 @@ int main() {
                 //sleep lift
                 //back to center
                 //return to decide
-                break;
-                
-            case score_black:
                 break;
                 
             case end:
