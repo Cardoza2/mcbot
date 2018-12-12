@@ -313,7 +313,7 @@ void config_PWM_2() {
     _OC2IE = 1; //ENABLES YOUR INTERRUPT
     _OC2IF = 0; // eNABLES iNTERRUPT FLAG
     
-
+    _LATA0 = 0; //sleep lift
 }
 
 void __attribute__((interrupt, auto_psv)) _OC1Interrupt(void) {
@@ -450,6 +450,7 @@ void score() {
     stopDriving();
     _LATB15 = 0;    //sleep wheels
     
+    _LATB7 = 0;     //debug led
     if (scoreColor == 'b') {    //move servo depending on color
         OC3R = 380;
         blkSorted = 0;
@@ -459,8 +460,10 @@ void score() {
     }
     
     _TRISA0 = 1;    //unsleep lift
+    _LATA1 = 1;     //1 is up
     liftingCounter = 0;
     while (1) {
+        _LATB7 = 1;     //debug LED
         if (liftingCounter > 590) { //350 is a good number for the lifter, or 590 in the latest tests 
             _LATA0 = 0; //sleep lift
             __delay_ms(2000);

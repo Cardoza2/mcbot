@@ -61,11 +61,11 @@ xc16-ld 1.35 (A)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x160           0x210  (528)
-.text                        0x360               0x486           0x6c9  (1737)
-.init.delay32                0x7e6                0x1c            0x2a  (42)
-.dinit                       0x802                0x1a            0x27  (39)
+.text                        0x360               0x48e           0x6d5  (1749)
+.init.delay32                0x7ee                0x1c            0x2a  (42)
+.dinit                       0x80a                0x1a            0x27  (39)
 
-                 Total "program" memory used (bytes):          0x92a  (2346) 14%
+                 Total "program" memory used (bytes):          0x936  (2358) 14%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -149,21 +149,21 @@ External Symbols in Program Memory (by address):
                   0x00044e                  _configCNInterrupt
                   0x000468                  _config_PWM_1
                   0x00049a                  _config_PWM_2
-                  0x0004ca                  _turnRight
-                  0x0004d6                  _driveForward
-                  0x0004ec                  _creepForward
-                  0x000518                  _stopDriving
-                  0x000522                  _driveBackward
-                  0x00053c                  _findActive
-                  0x00055a                  _turn180
-                  0x000574                  _turnRight90
-                  0x000596                  _turnLeft90
-                  0x0005b8                  _sort
-                  0x0005f8                  _senseColor
-                  0x000638                  _score
-                  0x000688                  _decide
-                  0x00074c                  _main
-                  0x0007e6                  ___delay32
+                  0x0004cc                  _turnRight
+                  0x0004d8                  _driveForward
+                  0x0004ee                  _creepForward
+                  0x00051a                  _stopDriving
+                  0x000524                  _driveBackward
+                  0x00053e                  _findActive
+                  0x00055c                  _turn180
+                  0x000576                  _turnRight90
+                  0x000598                  _turnLeft90
+                  0x0005ba                  _sort
+                  0x0005fa                  _senseColor
+                  0x00063a                  _score
+                  0x000690                  _decide
+                  0x000754                  _main
+                  0x0007ee                  ___delay32
 
 External Symbols in Program Memory (by name):
 
@@ -172,7 +172,7 @@ External Symbols in Program Memory (by name):
                   0x0002e6                  __OC1Interrupt
                   0x000300                  __OC2Interrupt
                   0x0002c8                  __T1Interrupt
-                  0x0007e6                  ___delay32
+                  0x0007ee                  ___delay32
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
@@ -185,20 +185,20 @@ External Symbols in Program Memory (by name):
                   0x000468                  _config_PWM_1
                   0x00049a                  _config_PWM_2
                   0x000422                  _config_PWM_3
-                  0x0004ec                  _creepForward
-                  0x000688                  _decide
-                  0x000522                  _driveBackward
-                  0x0004d6                  _driveForward
-                  0x00053c                  _findActive
-                  0x00074c                  _main
-                  0x000638                  _score
-                  0x0005f8                  _senseColor
-                  0x0005b8                  _sort
-                  0x000518                  _stopDriving
-                  0x00055a                  _turn180
-                  0x000596                  _turnLeft90
-                  0x0004ca                  _turnRight
-                  0x000574                  _turnRight90
+                  0x0004ee                  _creepForward
+                  0x000690                  _decide
+                  0x000524                  _driveBackward
+                  0x0004d8                  _driveForward
+                  0x00053e                  _findActive
+                  0x000754                  _main
+                  0x00063a                  _score
+                  0x0005fa                  _senseColor
+                  0x0005ba                  _sort
+                  0x00051a                  _stopDriving
+                  0x00055c                  _turn180
+                  0x000598                  _turnLeft90
+                  0x0004cc                  _turnRight
+                  0x000576                  _turnRight90
 
 Memory Configuration
 
@@ -315,9 +315,9 @@ __FDS
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x207 build/default/production/compcode.o
 
-.debug_line       0x000000        0x282
+.debug_line       0x000000        0x286
  *(.debug_line)
- .debug_line      0x000000        0x282 build/default/production/compcode.o
+ .debug_line      0x000000        0x286 build/default/production/compcode.o
 
 .debug_frame      0x000000        0x334
  *(.debug_frame)
@@ -1033,8 +1033,8 @@ __c30_signature
  .ivt._CNInterrupt
                   0x00003a          0x2 build/default/production/compcode.o
 
-.text             0x000360        0x486
- .text            0x000360        0x486 build/default/production/compcode.o
+.text             0x000360        0x48e
+ .text            0x000360        0x48e build/default/production/compcode.o
                   0x000360                  _configPins
                   0x000394                  _configTimer1
                   0x0003bc                  _configTimer2
@@ -1043,24 +1043,24 @@ __c30_signature
                   0x00044e                  _configCNInterrupt
                   0x000468                  _config_PWM_1
                   0x00049a                  _config_PWM_2
-                  0x0004ca                  _turnRight
-                  0x0004d6                  _driveForward
-                  0x0004ec                  _creepForward
-                  0x000518                  _stopDriving
-                  0x000522                  _driveBackward
-                  0x00053c                  _findActive
-                  0x00055a                  _turn180
-                  0x000574                  _turnRight90
-                  0x000596                  _turnLeft90
-                  0x0005b8                  _sort
-                  0x0005f8                  _senseColor
-                  0x000638                  _score
-                  0x000688                  _decide
-                  0x00074c                  _main
+                  0x0004cc                  _turnRight
+                  0x0004d8                  _driveForward
+                  0x0004ee                  _creepForward
+                  0x00051a                  _stopDriving
+                  0x000524                  _driveBackward
+                  0x00053e                  _findActive
+                  0x00055c                  _turn180
+                  0x000576                  _turnRight90
+                  0x000598                  _turnLeft90
+                  0x0005ba                  _sort
+                  0x0005fa                  _senseColor
+                  0x00063a                  _score
+                  0x000690                  _decide
+                  0x000754                  _main
 
-.init.delay32     0x0007e6         0x1c
- .init.delay32    0x0007e6         0x1c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x0007e6                  ___delay32
+.init.delay32     0x0007ee         0x1c
+ .init.delay32    0x0007ee         0x1c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x0007ee                  ___delay32
 
-.dinit            0x000802         0x1a
- .dinit           0x000802         0x1a data_init
+.dinit            0x00080a         0x1a
+ .dinit           0x00080a         0x1a data_init
