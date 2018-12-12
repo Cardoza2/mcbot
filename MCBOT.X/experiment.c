@@ -1036,40 +1036,35 @@ int main(void) {
     configPins();
     
     
-    _LATB7 = 1;
-    _LATB14 = 1;
+ 
     
+    
+    config_PWM_2();
+
+     _LATA0 = 1;     //disable sleep
+     _LATA1 = 1;    //1 is up
+    
+     
     while(1) {
-        
+        _LATB7 = 1;     //testing LED
+        if (liftingCounter > 590) {        //350 is a good number for the lifter, or 590 in the latest tests 
+             _LATB7 = 0;     //testing LED
+            _LATA0 = 0;     //sleep
+            __delay_ms(2000);
+            _LATA1 = 0;     //0 is down
+            _LATA0 = 1;     //disables sleep
+            _LATB7 = 1;     //testing LED
+            liftingCounter = 0;
+            while(1) {
+                 
+                if (liftingCounter > 590) {
+                    _LATB7 = 0;     //testing LED
+                    _LATA0 = 0;
+                    while(1) {}
+                }
+            }
+        }
     }
-    
-    
-//    config_PWM_2();
-//
-//     _LATA0 = 1;     //disable sleep
-//     _LATA1 = 1;    //1 is up
-//    
-//     
-//    while(1) {
-//        _LATB7 = 1;     //testing LED
-//        if (liftingCounter > 590) {        //350 is a good number for the lifter, or 590 in the latest tests 
-//             _LATB7 = 0;     //testing LED
-//            _LATA0 = 0;     //sleep
-//            __delay_ms(2000);
-//            _LATA1 = 0;     //0 is down
-//            _LATA0 = 1;     //disables sleep
-//            _LATB7 = 1;     //testing LED
-//            liftingCounter = 0;
-//            while(1) {
-//                 
-//                if (liftingCounter > 590) {
-//                    _LATB7 = 0;     //testing LED
-//                    _LATA0 = 0;
-//                    while(1) {}
-//                }
-//            }
-//        }
-//    }
 
     return 0;
 }

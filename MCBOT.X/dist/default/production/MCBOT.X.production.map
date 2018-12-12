@@ -61,11 +61,11 @@ xc16-ld 1.35 (A)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x160           0x210  (528)
-.text                        0x360               0x47c           0x6ba  (1722)
-.init.delay32                0x7dc                0x1c            0x2a  (42)
-.dinit                       0x7f8                0x16            0x21  (33)
+.text                        0x360               0x486           0x6c9  (1737)
+.init.delay32                0x7e6                0x1c            0x2a  (42)
+.dinit                       0x802                0x1a            0x27  (39)
 
-                 Total "program" memory used (bytes):          0x915  (2325) 14%
+                 Total "program" memory used (bytes):          0x92a  (2346) 14%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x800]
@@ -73,9 +73,9 @@ section                    address   length (PC units)   length (bytes) (dec)
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .nbss                        0x800                   0            0x12  (18)
-.ndata                       0x812                   0             0xc  (12)
+.ndata                       0x812                   0            0x10  (16)
 
-                 Total "data" memory used (bytes):           0x1e  (30) 1%
+                 Total "data" memory used (bytes):           0x22  (34) 1%
 
 
 Dynamic Memory Usage
@@ -83,9 +83,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x81e                               0x7e2  (2018)
+stack                        0x822                               0x7de  (2014)
 
-                 Maximum dynamic memory (bytes):          0x7e2  (2018)
+                 Maximum dynamic memory (bytes):          0x7de  (2014)
 
 
 External Symbols in Data Memory (by address):
@@ -103,27 +103,31 @@ External Symbols in Data Memory (by address):
                     0x0812                  _ballLimit
                     0x0814                  _IRthreshold
                     0x0816                  _middle
-                    0x0818                  _clicksTo180
-                    0x081a                  _black
-                    0x081c                  _white
+                    0x0818                  _left
+                    0x081a                  _right
+                    0x081c                  _clicksTo180
+                    0x081e                  _black
+                    0x0820                  _white
 
 External Symbols in Data Memory (by name):
 
                     0x0814                  _IRthreshold
                     0x0812                  _ballLimit
-                    0x081a                  _black
+                    0x081e                  _black
                     0x0802                  _blkSorted
-                    0x0818                  _clicksTo180
+                    0x081c                  _clicksTo180
                     0x0807                  _creeping
                     0x0806                  _driving
                     0x0808                  _drivingCounter
+                    0x0818                  _left
                     0x080a                  _liftingCounter
                     0x0816                  _middle
                     0x0800                  _numSorted
+                    0x081a                  _right
                     0x080c                  _scoreColor
                     0x0810                  _state
                     0x080e                  _timer
-                    0x081c                  _white
+                    0x0820                  _white
                     0x0804                  _whtSorted
 
 External Symbols in Program Memory (by address):
@@ -151,15 +155,15 @@ External Symbols in Program Memory (by address):
                   0x000518                  _stopDriving
                   0x000522                  _driveBackward
                   0x00053c                  _findActive
-                  0x000554                  _turn180
-                  0x00056e                  _turnRight90
-                  0x000590                  _turnLeft90
-                  0x0005b2                  _sort
-                  0x0005f2                  _senseColor
-                  0x000632                  _score
-                  0x00067e                  _decide
-                  0x000742                  _main
-                  0x0007dc                  ___delay32
+                  0x00055a                  _turn180
+                  0x000574                  _turnRight90
+                  0x000596                  _turnLeft90
+                  0x0005b8                  _sort
+                  0x0005f8                  _senseColor
+                  0x000638                  _score
+                  0x000688                  _decide
+                  0x00074c                  _main
+                  0x0007e6                  ___delay32
 
 External Symbols in Program Memory (by name):
 
@@ -168,7 +172,7 @@ External Symbols in Program Memory (by name):
                   0x0002e6                  __OC1Interrupt
                   0x000300                  __OC2Interrupt
                   0x0002c8                  __T1Interrupt
-                  0x0007dc                  ___delay32
+                  0x0007e6                  ___delay32
                   0x000252                  __data_init
                   0x000252                  __data_init_standard
                   0x00023c                  __psv_init
@@ -182,19 +186,19 @@ External Symbols in Program Memory (by name):
                   0x00049a                  _config_PWM_2
                   0x000422                  _config_PWM_3
                   0x0004ec                  _creepForward
-                  0x00067e                  _decide
+                  0x000688                  _decide
                   0x000522                  _driveBackward
                   0x0004d6                  _driveForward
                   0x00053c                  _findActive
-                  0x000742                  _main
-                  0x000632                  _score
-                  0x0005f2                  _senseColor
-                  0x0005b2                  _sort
+                  0x00074c                  _main
+                  0x000638                  _score
+                  0x0005f8                  _senseColor
+                  0x0005b8                  _sort
                   0x000518                  _stopDriving
-                  0x000554                  _turn180
-                  0x000590                  _turnLeft90
+                  0x00055a                  _turn180
+                  0x000596                  _turnLeft90
                   0x0004ca                  _turnRight
-                  0x00056e                  _turnRight90
+                  0x000574                  _turnRight90
 
 Memory Configuration
 
@@ -302,18 +306,18 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x3037
+.debug_info       0x000000       0x305e
  *(.debug_info)
- .debug_info      0x000000       0x3037 build/default/production/compcode.o
+ .debug_info      0x000000       0x305e build/default/production/compcode.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x207
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x207 build/default/production/compcode.o
 
-.debug_line       0x000000        0x27f
+.debug_line       0x000000        0x282
  *(.debug_line)
- .debug_line      0x000000        0x27f build/default/production/compcode.o
+ .debug_line      0x000000        0x282 build/default/production/compcode.o
 
 .debug_frame      0x000000        0x334
  *(.debug_frame)
@@ -330,10 +334,10 @@ __FDS
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x27c
+                  0x000000        0x28f
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000        0x27c build/default/production/compcode.o
+                  0x000000        0x28f build/default/production/compcode.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -989,14 +993,16 @@ __c30_signature
                     0x080e                  _timer
                     0x0810                  _state
 
-.ndata              0x0812          0xc
- .ndata             0x0812          0xc build/default/production/compcode.o
+.ndata              0x0812         0x10
+ .ndata             0x0812         0x10 build/default/production/compcode.o
                     0x0812                  _ballLimit
                     0x0814                  _IRthreshold
                     0x0816                  _middle
-                    0x0818                  _clicksTo180
-                    0x081a                  _black
-                    0x081c                  _white
+                    0x0818                  _left
+                    0x081a                  _right
+                    0x081c                  _clicksTo180
+                    0x081e                  _black
+                    0x0820                  _white
 
 .config_ICS       0xf8000e          0x2
  .config_ICS      0xf8000e          0x2 build/default/production/compcode.o
@@ -1027,8 +1033,8 @@ __c30_signature
  .ivt._CNInterrupt
                   0x00003a          0x2 build/default/production/compcode.o
 
-.text             0x000360        0x47c
- .text            0x000360        0x47c build/default/production/compcode.o
+.text             0x000360        0x486
+ .text            0x000360        0x486 build/default/production/compcode.o
                   0x000360                  _configPins
                   0x000394                  _configTimer1
                   0x0003bc                  _configTimer2
@@ -1043,18 +1049,18 @@ __c30_signature
                   0x000518                  _stopDriving
                   0x000522                  _driveBackward
                   0x00053c                  _findActive
-                  0x000554                  _turn180
-                  0x00056e                  _turnRight90
-                  0x000590                  _turnLeft90
-                  0x0005b2                  _sort
-                  0x0005f2                  _senseColor
-                  0x000632                  _score
-                  0x00067e                  _decide
-                  0x000742                  _main
+                  0x00055a                  _turn180
+                  0x000574                  _turnRight90
+                  0x000596                  _turnLeft90
+                  0x0005b8                  _sort
+                  0x0005f8                  _senseColor
+                  0x000638                  _score
+                  0x000688                  _decide
+                  0x00074c                  _main
 
-.init.delay32     0x0007dc         0x1c
- .init.delay32    0x0007dc         0x1c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x0007dc                  ___delay32
+.init.delay32     0x0007e6         0x1c
+ .init.delay32    0x0007e6         0x1c g:/program files (x86)/microchip/xc16/v1.35/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x0007e6                  ___delay32
 
-.dinit            0x0007f8         0x16
- .dinit           0x0007f8         0x16 data_init
+.dinit            0x000802         0x1a
+ .dinit           0x000802         0x1a data_init

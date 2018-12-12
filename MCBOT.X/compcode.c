@@ -18,12 +18,14 @@ int numSorted = 0;
 int blkSorted = 0;
 int whtSorted = 0;
 int ballLimit = 8;
-int IRthreshold = 2450;     //3000 in actual arena 2450 with clicker
+int IRthreshold = 2300;     //3000 in actual arena 2450 with clicker
 bool driving = false;    //true means we are driving, false means we've stopped
 bool creeping = false;  //creeping is designed to ignore the interrupt when we want to wedge into a corner
 int drivingCounter = 0;
 int liftingCounter = 0;
 int middle = 530;
+int left = 380;
+int right = 7904;
 int clicksTo180 = 340;
 int black = 620;
 int white = 3700;
@@ -372,6 +374,7 @@ void findActive() {
     turnRight();
     while(ADC1BUF4 < IRthreshold) {}
     stopDriving();
+    __delay_ms(100);
 }
 
 void turn180() {
@@ -404,12 +407,12 @@ void turnLeft90() {
 void sort(char color) {
     
     if (color == 'w') {
-        OC3R = 760;
+        OC3R = 790;
         numSorted++;
         whtSorted++;
     }
     else if (color == 'b') {
-        OC3R = 400;
+        OC3R = 380;
         numSorted++;
         blkSorted++;
     }
@@ -443,13 +446,15 @@ char senseColor() {
 void score() {
     /// scoring based on color determined in deciding function
     driveForward();
+    creepForward();
+    stopDriving();
     _LATB15 = 0;    //sleep wheels
     
     if (scoreColor == 'b') {    //move servo depending on color
-        OC3R = 400;
+        OC3R = 380;
         blkSorted = 0;
     } else {
-        OC3R = 760;
+        OC3R = 790;
         whtSorted = 0;
     }
     
@@ -614,9 +619,9 @@ int main() {
                 /// Sorting balls and counting how many we have ///
                 
                 // set servo to center
-                 OC3R = 760;
+                 OC3R = 790;
                 __delay_ms(300);
-                OC3R = 400;
+                OC3R = 380;
                 __delay_ms(300);
                 OC3R = 560;
                 __delay_ms(300);
