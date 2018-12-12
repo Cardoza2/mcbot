@@ -17,10 +17,8 @@
 int numSorted = 0;
 int blkSorted = 0;
 int whtSorted = 0;
-int balllimit = 8;
+int ballLimit = 8;
 int IRthreshold = 2450;     //3000 in actual arena 2450 with clicker
-int counts = 0;
-bool sorts = false;         // true or false if it needs to sort
 bool driving = false;    //true means we are driving, false means we've stopped
 bool creeping = false;  //creeping is designed to ignore the interrupt when we want to wedge into a corner
 int drivingCounter = 0;
@@ -29,7 +27,9 @@ int middle = 530;
 int clicksTo180 = 340;
 int black = 620;
 int white = 3700;
-enum asdf {start, sorting, decide, score, end}; //lists the possible states
+enum asdf {start, sorting, scoring, end}; //lists the possible states
+char scoreColor = 0;
+int timer = 0;
 
 
 void configPins() {
@@ -63,6 +63,34 @@ void configPins() {
     _ANSB14 = 0; //pin 17 analog off 
     _TRISB15 = 0; // pin 18 Drive stepper sleep
     _ANSB15 = 0; //pin 18 disable analog
+}
+
+void configTimer1() {
+    
+    T1CONbits.TON = 1;      // turn on Timer1
+    T1CONbits.TCS = 0;      // INTERNAL CLOCK
+    T1CONbits.TCKPS = 0b11;     // 1:256 prescale. For more info on why its 0b11 check the data sheet
+    PR1 = 15625;      // TIMER PERIOD OF 15625 is 1 second with the 4 MHz oscillator and 256 prescaler
+    TMR1 = 0;     // RESET TIMER1 TO ZERO
+    
+    // Configure Timer1 interrupt
+    _T1IP = 6;          // Select Timer1 interrupt priority
+    _T1IE = 1;          // Enable Timer1 interrupt
+    _T1IF = 0;          // Clear Timer1 interrupt flag
+}
+
+void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {       //used for round timer
+    // Clear Timer1 interrupt flag so that the program doesn't
+    // just jump back to this function when it returns to the
+    // while(1) loop.
+    _T1IF = 0;
+
+    TMR1 = 0;
+    
+    timer++;
+    if (timer >= 105) {
+        while(1) {}
+    }
 }
 
 void configTimer2() {
@@ -181,7 +209,7 @@ void configCNInterrupt() {
     // Set CN interrupt priority to 6
     _CN14IE = 1; // Enable CN on pin 5 (CNEN1 register)
     _CN5PUE = 0; // Disable pull-up resistor (CNPU1 register)
-    _CNIP = 6; // Set CN interrupt priority (IPC4 register)
+    _CNIP = 5; // Set CN interrupt priority (IPC4 register)
     _CNIE = 1; // Enable CN interrupts (IEC1 register)
 
     // Clear Change Notification interrupt flag (IFS1 register)
@@ -286,13 +314,13 @@ void config_PWM_2() {
 
 }
 
-void _ISR _OC1Interrupt(void) {
+void __attribute__((interrupt, auto_psv)) _OC1Interrupt(void) {
     drivingCounter++;
     
     _OC1IF = 0; // eNABLES iNTERRUPT FLAG
 }
 
-void _ISR _OC2Interrupt(void) {
+void __attribute__((interrupt, auto_psv)) _OC2Interrupt(void) {
     liftingCounter++;  
     _OC2IF = 0; // eNABLES iNTERRUPT FLAG
 }
@@ -312,43 +340,38 @@ void driveForward() {
 }
 
 void creepForward() {
+    _LATB7 = 0; //test led
     creeping = true;
-    OC1RS = 1500;
+    OC1RS = 25000;
     _LATB15 = 1;    //disables sleep
     driving = true;    //sets boolean
     _LATB8 = 0;
     _LATB9 = 1;
     drivingCounter = 0;
-    while(drivingCounter < 300) {}   //switches in stopDriving function
-    OC1RS = 4000;
+    while(drivingCounter < 200) {}   //switches in stopDriving function
+    OC1RS = 15000;
     creeping = false;
 }
 
 void stopDriving() {
     driving = false;     //used in driveForward function
-    //OC1R = 0;            //Sets driving stepper duty cycle 
     _LATB15 = 0;    //sleep
 }
 
 void driveBackward() {
     _LATB15 = 1;    //disables sleep
-    //_LATB7 = 1;     //testing LED
     drivingCounter = 0;
-    //driving = true;
     _LATB8 = 1;
     _LATB9 = 0;
     while(drivingCounter < middle) {}   //drives backward until the middle
-    //_LATB7 = 0;     //testing LED
     _LATB15 = 0;    //sleep
 }
 
 void findActive() {
+    _LATB7 = 1; //test led
     turnRight();
     while(ADC1BUF4 < IRthreshold) {}
-    //_LATB7 = 0;   //Test LED
     stopDriving();
-//    driveForward();
-//    stopDriving();
 }
 
 void turn180() {
@@ -360,54 +383,161 @@ void turn180() {
     _LATB15 = 0;    //sleep
 }
 
+void turnRight90() {
+    _LATB15 = 1;    //disables sleep
+    drivingCounter = 0;
+    _LATB8 = 1;
+    _LATB9 = 1;
+    while (drivingCounter < clicksTo180/2) {} //turns a 90 to the right
+    _LATB15 = 0;    //sleep
+}
+
+void turnLeft90() {
+    _LATB15 = 1;    //disables sleep
+    drivingCounter = 0;
+    _LATB8 = 0;
+    _LATB9 = 0;
+    while (drivingCounter < clicksTo180/2) {} //turns a 90 to the left
+    _LATB15 = 0;    //sleep
+}
+
 void sort(char color) {
-    sorts = true;
-    counts = 0;
-    _LATA2 = 1; //turn on QRD LED
-    __delay_ms(200);
-    while (sorts) {
-        if (color == 'b') {
-            OC3R = 400;
-            numSorted++;
-            blkSorted++;
-            sorts = false;
-        } else if (color == 'w') {
-            OC3R = 700;
-            numSorted++;
-            whtSorted++;
-            sorts = false;
-        } else if (counts==500){
-            _LATB14 = 0;
-            counts = 0;
-            __delay_ms(200);
-            _LATB14 = 1;
-        }else {
-            OC3R = 560;
-            sorts = true;
-            counts++;
-        }
-    }
     
-    counts = 0;
-    _LATA2 = 0; //Turn off QRD LED
-
-
+    if (color == 'w') {
+        OC3R = 700;
+        numSorted++;
+        whtSorted++;
+    }
+    else if (color == 'b') {
+        OC3R = 400;
+        numSorted++;
+        blkSorted++;
+    }
+    __delay_ms(300);
+    return;
 }
 
 char senseColor() {
     char color;
-    if (ADC1BUF14 > white) {      //3700 is approx 3V
-        color = 'w';
-    }
-    else if (ADC1BUF14 > black) {     //1700 is approx 1.4V
-        color = 'b';
-    }
-    else {
-        color = 'n';            //means there is nothing there
-        return senseColor();
+    while(1) {
+        if (ADC1BUF14 > white) {      //3700 is approx 3V
+            color = 'w';
+            return color;
+        }
+        else if (ADC1BUF14 > black) {     //1700 is approx 1.4V
+            color = 'b';
+            return color;
+        }
+        else {
+            color = 'n';            //means there is nothing there
+            _LATB14 = 0;    //trigger LED
+            __delay_ms(300);
+            _LATB14 = 1;    //trigger LED
+        }
     }
     
     return color;
+}
+
+void score() {
+    /// scoring based on color determined in deciding function
+    driveForward();
+    _LATB15 = 0;    //sleep wheels
+    
+    if (scoreColor == 'b') {    //move servo depending on color
+        OC3R = 400;
+        blkSorted = 0;
+    } else {
+        OC3R = 760;
+        whtSorted = 0;
+    }
+    
+    _TRISA0 = 1;    //unsleep lift
+    liftingCounter = 0;
+    while (1) {
+        if (liftingCounter > 590) { //350 is a good number for the lifter, or 590 in the latest tests 
+            _LATA0 = 0; //sleep lift
+            __delay_ms(2000);
+            _LATA1 = 0; //0 is down
+            _LATA0 = 1; //disables sleep on lift
+            liftingCounter = 0;
+            while (1) {
+                if (liftingCounter > 590) {
+                    _LATA0 = 0; //sleep lift
+                }
+            }
+        }
+    }
+    _LATB15 = 1;    //unsleep wheels
+    driveBackward();
+}
+
+void decide() {
+    turnRight90();
+    if (whtSorted >= 4 && blkSorted >= 4) {     //lots of white and black
+        if (ADC1BUF4 >= IRthreshold) {      //black first
+            scoreColor = 'b';
+            score();                    //score black
+            turnRight90();
+            scoreColor = 'w';       
+            score();                    //score white
+            turn180();
+        }
+        else {                              //white first
+            scoreColor = 'w';
+            score();                    //score white
+            turnRight90();
+            if (ADC1BUF4 >= IRthreshold) { //find black goal
+                scoreColor = 'b';
+                score();                    //score black
+                turn180();
+            }
+            else {
+                turnRight90();
+                if (ADC1BUF4 >= IRthreshold) { //find black goal
+                    scoreColor = 'b';
+                    score();               //score black
+                }
+                turnRight90();
+            }
+        }
+        return;
+    }
+    
+    else if(whtSorted >= 4 && blkSorted <= 4) {     //more white
+        scoreColor = 'w';
+        if (ADC1BUF4 < IRthreshold) {   //white goal
+            score();                    //score white
+            turnLeft90();
+        }   
+        else {                          //saw black goal first
+            turnRight90();
+            score();                    //score white
+            turn180();
+        }
+        return;
+    }
+    
+    else if (whtSorted <= 4 && blkSorted >= 4) {    //more black
+        scoreColor = 'b';
+        if (ADC1BUF4 >= IRthreshold) { //find black goal
+                score();                    //score black
+                turnLeft90();
+        }
+        else {
+            turnRight90();
+            if (ADC1BUF4 >= IRthreshold) { //find black goal
+                score();                    //score black
+                turn180();
+            }
+            else {
+                turnRight90();
+                score();                    //score Black
+                turnRight90();
+            }
+        }
+        return;
+    }
 }
 
 void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
@@ -420,8 +550,12 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
     // You will need to write code to distinguish between
     // a button press and a button release.
 
-    __delay_ms(250);
+    //__delay_ms(250);
     _CNIF = 0; // Clear interrupt flag
+    
+    if (creeping) {
+        return;
+    }
     
     if (_RB12 == 1) {       //Forward corner
         stopDriving();
@@ -432,12 +566,12 @@ void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
     else {}                 //leaving corner
 }
 
-
+enum asdf state = start;
 
 int main() {
     
-    //Do we need to have a timer for the round? (To put the bot into the end state)
     configPins();
+    configTimer1();
     configTimer2();
     config_PWM_1();
     config_PWM_2();
@@ -445,12 +579,18 @@ int main() {
     configCNInterrupt();
     configAtoD();
     
-    enum asdf state = start;
+    
+    
+    
+    _LATB14 = 1;
+    while(1) {}
+    
+    
     
     //Delay to get your hands out of the way
     __delay_ms(500);
     
-    //enum asdf {start, sorting, decide, score, end}; //lists the possible states
+    //enum asdf {start, sorting, scoring, end}; //lists the possible states
             //Note, when switching states, the state doesn't switch until it has finished the case, then it changes to the case that matches the most 
                 //recent value for state.
     while(1){
@@ -458,57 +598,50 @@ int main() {
             case start:
                 /// Starting the round and getting us to the corner ///
                 findActive();
-                __delay_ms(100);
-                driveForward();     ////???? Not exactly sure what needs to be done here.      
-                    //Store location if we are using a location???
-                    
+                //__delay_ms(100);
+                driveForward();
+                //_LATB7 = 0; //test led
+                creepForward();
+                stopDriving();
                 //Switch state to sorting       
                 state = sorting;
                 break;
                 
             case sorting:
+                //_LATB7 = 0;     //test Led
+                
                 /// Sorting balls and counting how many we have ///
                 
                 // set servo to center
+                 OC3R = 760;
+                __delay_ms(300);
+                OC3R = 400;
+                __delay_ms(300);
                 OC3R = 560;
+                __delay_ms(300);
                 
+                                
                 //While loop to collect balls
-                while(whtSorted == balllimit || blkSorted == balllimit){
+                while(whtSorted <= ballLimit && blkSorted <= ballLimit) {            
                     _LATB14 = 1;     //turn on trigger LED
+                    _LATA2 = 1; //turn on QRD LED
                     sort(senseColor());     //determines color and moves sorting arm
-                    _LATB14 = 0;    //Turn LED off
-                     OC3R = 560;     //Return sorting arm to middle
+                    
+                    OC3R = 560;     //Return sorting arm to middle
+                    _LATB14 = 0;    //Turn trigger LED off
+                    _LATA2 = 0; //turn off QRD LED
+                    __delay_ms(300);
                 }
+                state = scoring;
+                break;
+                
+            case scoring:
+                
                 driveBackward();
-                state = decide;
-                break;
+                decide();
+                driveForward();
                 
-            case decide:
-                /// Deciding where to go (white goal, black goal, dispenser) while moving to center  ///
-                
-                //Unsleep wheels
-                //drive back
-                /// Basically spencer's algorithm ///
-                        //whenever it goes to score it enters scoring?
-                
-               
-                
-                break;
-                
-            case score:
-                /// scoring based on color determined in deciding case
-                //drive forward until bumpers go off
-                //unsleep lift
-                //creep forward a bit
-                //sleep wheels
-                //move servo depending on color
-                //dump (and retract)
-                //sleep wheels 
-                //reset color count
-                //unsleep wheels
-                //sleep lift
-                //back to center
-                //return to decide
+                state = sorting;
                 break;
                 
             case end:
