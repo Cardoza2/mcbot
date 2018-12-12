@@ -473,12 +473,13 @@ void score() {
             while (1) {
                 if (liftingCounter > 590) {
                     _LATA0 = 0; //sleep lift
+                    _LATB15 = 1; //unsleep wheels
+                    driveBackward();
+                    return;
                 }
             }
         }
     }
-    _LATB15 = 1;    //unsleep wheels
-    driveBackward();
 }
 
 void decide() {
