@@ -404,7 +404,7 @@ void turnLeft90() {
 void sort(char color) {
     
     if (color == 'w') {
-        OC3R = 700;
+        OC3R = 760;
         numSorted++;
         whtSorted++;
     }
@@ -413,7 +413,7 @@ void sort(char color) {
         numSorted++;
         blkSorted++;
     }
-    __delay_ms(300);
+    __delay_ms(400);
     return;
 }
 
@@ -431,8 +431,9 @@ char senseColor() {
         else {
             color = 'n';            //means there is nothing there
             _LATB14 = 0;    //trigger LED
-            __delay_ms(300);
+            __delay_ms(350);
             _LATB14 = 1;    //trigger LED
+            __delay_ms(350);
         }
     }
     
@@ -582,8 +583,8 @@ int main() {
     
     
     
-    _LATB14 = 1;
-    while(1) {}
+    //_LATB14 = 1;
+    //while(1) {}
     
     
     
