@@ -91,7 +91,10 @@ void __attribute__((interrupt, no_auto_psv)) _T1Interrupt(void) {       //used f
     TMR1 = 0;
     
     timer++;
-    if (timer >= 105) {
+    if (timer >= 110) {
+        _LATA0 = 0;
+        stopDriving();
+        _LATB14 = 0;
         while(1) {}
     }
 }
@@ -328,6 +331,11 @@ void __attribute__((interrupt, auto_psv)) _OC2Interrupt(void) {
     _OC2IF = 0; // eNABLES iNTERRUPT FLAG
 }
 
+void stopDriving() {
+    driving = false;     //used in driveForward function
+    _LATB15 = 0;    //sleep
+}
+
 void turnRight() {
     _LATB15 = 1;    //disable sleep
     _LATB8 = 1;
@@ -336,10 +344,19 @@ void turnRight() {
 
 void driveForward() {
     _LATB15 = 1;    //disables sleep
+    _LATB7 = 1;
     driving = true;    //sets boolean
     _LATB8 = 0;
     _LATB9 = 1;
-    while(driving) {}   //switches in stopDriving function
+    drivingCounter = 0;
+    
+    while(driving) {
+        if(drivingCounter > (middle + 150)) {
+            stopDriving();
+        }
+        
+    }
+       //switches in stopDriving function
 }
 
 void creepForward() {
@@ -351,15 +368,11 @@ void creepForward() {
     _LATB8 = 0;
     _LATB9 = 1;
     drivingCounter = 0;
-    while(drivingCounter < 70) {}   //switches in stopDriving function
+    while(drivingCounter < 150) {}   //switches in stopDriving function
     OC1RS = 15000;
     creeping = false;
 }
 
-void stopDriving() {
-    driving = false;     //used in driveForward function
-    _LATB15 = 0;    //sleep
-}
 
 void driveBackward() {
     _LATB15 = 1;    //disables sleep
@@ -371,7 +384,7 @@ void driveBackward() {
 }
 
 void findActive() {
-    _LATB7 = 1; //test led
+    _LATB7 = 0; //test led
     turnRight();
     while(ADC1BUF4 < IRthreshold) {}
     stopDriving();
@@ -468,7 +481,7 @@ void score() {
         _LATB7 = 1;     //debug LED
         if (liftingCounter > liftingHeight) { //350 is a good number for the lifter, or 590 in the latest tests 
             _LATA0 = 0; //sleep lift
-            shakeyShakey();
+            //shakeyShakey();
             __delay_ms(2000);
             _LATA1 = 0; //0 is down
             _LATA0 = 1; //disables sleep on lift
@@ -554,6 +567,31 @@ void decide() {
     }
 }
 
+void rammer() {
+    _LATB15 = 1; //disables sleep
+    drivingCounter = 0;
+    _LATB8 = 0;
+    _LATB9 = 1;
+
+    while (drivingCounter < middle)
+        {
+        } //drives backward until the middle
+    _LATB15 = 0;
+    return;
+}
+
+void bullRush() {
+    _LATB15 = 1; //disables sleep
+    drivingCounter = 0;
+    _LATB8 = 0;
+    _LATB9 = 1;
+
+    while (drivingCounter < (middle + 50)) {
+    } //drives backward until the middle
+    _LATB15 = 0;
+    return;
+}
+
 void shakeyShakey(){
     _LATB15 = 1;    //disable sleep
     //direction pins the same way
@@ -566,6 +604,7 @@ void shakeyShakey(){
         _LATB9 = _LATB9^1;
     }
     _LATB15 = 0;    //sleep
+    return;
 }
 void __attribute__((interrupt, no_auto_psv)) _CNInterrupt(void) {
 
@@ -606,6 +645,8 @@ int main() {
     configCNInterrupt();
     configAtoD();
     
+    int counts = 0;
+    
     RCONbits.SWDTEN = 0b00;
     
     
@@ -624,7 +665,9 @@ int main() {
         switch(state){
             case start:
                 /// Starting the round and getting us to the corner ///
+                
                 findActive();
+                
                 //__delay_ms(100);
                 driveForward();
                 //_LATB7 = 0; //test led
@@ -636,11 +679,13 @@ int main() {
                 
             case sorting:
                 
-                for (int i = 0; i < 12; i++) {
+                counts = 0;
+                while (counts <16) {
                     _LATB14 = 0;    //turn light on
-                    __delay_ms(100);
+                    __delay_ms(200);
                     _LATB14 = 1;    //turn light on
-                    __delay_ms(100);
+                    __delay_ms(400);
+                    counts++;
                 }
                 
                 state = scoring;

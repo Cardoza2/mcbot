@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=experiment.c
+SOURCEFILES_QUOTED_IF_SPACED=crap.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/experiment.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/experiment.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/crap.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/crap.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/experiment.o
+OBJECTFILES=${OBJECTDIR}/crap.o
 
 # Source Files
-SOURCEFILES=experiment.c
+SOURCEFILES=crap.c
 
 
 CFLAGS=
@@ -94,20 +94,20 @@ MP_LINKER_FILE_OPTION=,--script=p24F16KA301.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/experiment.o: experiment.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/crap.o: crap.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/experiment.o.d 
-	@${RM} ${OBJECTDIR}/experiment.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  experiment.c  -o ${OBJECTDIR}/experiment.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/experiment.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/experiment.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/crap.o.d 
+	@${RM} ${OBJECTDIR}/crap.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  crap.c  -o ${OBJECTDIR}/crap.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/crap.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1    -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/crap.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
-${OBJECTDIR}/experiment.o: experiment.c  nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/crap.o: crap.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/experiment.o.d 
-	@${RM} ${OBJECTDIR}/experiment.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  experiment.c  -o ${OBJECTDIR}/experiment.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/experiment.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
-	@${FIXDEPS} "${OBJECTDIR}/experiment.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	@${RM} ${OBJECTDIR}/crap.o.d 
+	@${RM} ${OBJECTDIR}/crap.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  crap.c  -o ${OBJECTDIR}/crap.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/crap.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off  
+	@${FIXDEPS} "${OBJECTDIR}/crap.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

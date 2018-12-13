@@ -222,6 +222,16 @@
         <property key="firmware.download.all" value="false"/>
       </PICkit3PlatformTool>
       <item path="compcode.c" ex="true" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
       </item>
       <item path="config.c" ex="true" overriding="false">
         <C30>
@@ -235,9 +245,19 @@
         <C30Global>
         </C30Global>
       </item>
-      <item path="crap.c" ex="true" overriding="false">
+      <item path="crap.c" ex="false" overriding="false">
+        <C30>
+        </C30>
+        <C30-AR>
+        </C30-AR>
+        <C30-AS>
+        </C30-AS>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
       </item>
-      <item path="experiment.c" ex="false" overriding="false">
+      <item path="experiment.c" ex="true" overriding="false">
         <C30>
         </C30>
         <C30-AR>
