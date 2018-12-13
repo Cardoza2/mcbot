@@ -781,17 +781,20 @@
 
 
 
-//Test environment for driving backward and turning 180
+//Test environment for driving backward and turning 180 and forward
 
 //#pragma config FNOSC = FRC
 //#pragma config ICS = PGx3
 //#include "xc.h"
 //#define FCY 4000000UL       //needed for delay function
 //#include <libpic30.h>       //needed for delay function
+//#include <stdbool.h>        //need for bool
+//
 //
 //int drivingCounter = 0;
 //int middle = 530;       //distance to middle 530
 //int clicksTo180 = 340;
+//bool driving = false;
 //
 //void configPins() {
 //    _TRISA0 = 0; //pin 2 Lift Sleep
@@ -901,6 +904,13 @@
 //    _LATB15 = 0;    //sleep
 //}
 //
+//void driveForward() {
+//    _LATB15 = 1;    //disables sleep
+//    driving = true;    //sets boolean
+//    _LATB8 = 0;
+//    _LATB9 = 1;
+//    while(driving) {}   //switches in stopDriving function
+//}
 //
 //int main(void) {
 //    
@@ -914,8 +924,9 @@
 //    _LATB15 = 1;    //disables sleep
 //    
 //    while(1) {
-//        driveBackward();
+//        //driveBackward();
 //        //turn180();
+//        driveForward();
 //        while(1) {}
 //    }
 //
@@ -1047,7 +1058,7 @@ int main(void) {
      
     while(1) {
         _LATB7 = 1;     //testing LED
-        if (liftingCounter > 590) {        //350 is a good number for the lifter, or 590 in the latest tests 
+        if (liftingCounter > 800) {        //350 is a good number for the lifter, or 590 in the latest tests 
              _LATB7 = 0;     //testing LED
             _LATA0 = 0;     //sleep
             __delay_ms(2000);
@@ -1057,7 +1068,7 @@ int main(void) {
             liftingCounter = 0;
             while(1) {
                  
-                if (liftingCounter > 590) {
+                if (liftingCounter > 800) {
                     _LATB7 = 0;     //testing LED
                     _LATA0 = 0;
                     while(1) {}

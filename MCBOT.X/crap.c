@@ -1,5 +1,5 @@
 /*
- * File:   compcode.c
+ * File:   crap.c
  * Author: AdamC
  *
  * Created on December 10, 2018, 10:18 PM
@@ -32,7 +32,7 @@ int white = 1800;
 enum asdf {start, sorting, scoring, end}; //lists the possible states
 char scoreColor = 0;
 int timer = 0;
-int liftingHeight = 800;
+int liftingHeight = 650;
 
 
 void configPins() {
@@ -461,17 +461,6 @@ void score() {
     stopDriving();
     _LATB15 = 0;    //sleep wheels
     
-    _LATB7 = 0;     //debug led
-    if (scoreColor == 'b') {    //move servo depending on color
-        OC3R = 380;
-        numSorted -= blkSorted;
-        blkSorted = 0;
-    } else {
-        OC3R = 790;
-        numSorted -= whtSorted; 
-        whtSorted = 0;
-    }
-    
     _LATA0 = 1;    //unsleep lift
     _LATA1 = 1;     //1 is up
     liftingCounter = 0;
@@ -479,7 +468,7 @@ void score() {
         _LATB7 = 1;     //debug LED
         if (liftingCounter > liftingHeight) { //350 is a good number for the lifter, or 590 in the latest tests 
             _LATA0 = 0; //sleep lift
-            //shakeyShakey();
+            shakeyShakey();
             __delay_ms(2000);
             _LATA1 = 0; //0 is down
             _LATA0 = 1; //disables sleep on lift
@@ -571,7 +560,7 @@ void shakeyShakey(){
     _LATB8 = 1;
     _LATB9 = 1;
     drivingCounter = 0;
-    while(drivingCounter < 60) {
+    while(drivingCounter < 20) {
         __delay_ms(100)
         _LATB8 = _LATB8^1;
         _LATB9 = _LATB9^1;
@@ -646,42 +635,23 @@ int main() {
                 break;
                 
             case sorting:
-                //_LATB7 = 0;     //test Led
                 
-                /// Sorting balls and counting how many we have ///
-                
-                // set servo to center
-                 OC3R = 790;
-                __delay_ms(300);
-                OC3R = 380;
-                __delay_ms(300);
-                OC3R = 560;
-                __delay_ms(300);
-                
-                //OC3R = 560;
-                
-                //turn on QRD LED
-                _LATA2 = 1; //turn on QRD LED
-                _LATB14 = 1;     //turn on trigger LED
-                                
-                //While loop to collect balls
-                while(whtSorted <= ballLimit && blkSorted <= ballLimit && numSorted <= 10) {            
-                    
-                    sort(senseColor());     //determines color and moves sorting arm
-                    
-                    OC3R = 560;     //Return sorting arm to middle
-                    _LATB14 = 1;    //Turn trigger LED on
-                    //__delay_ms(300);
+                for (int i = 0; i < 12; i++) {
+                    _LATB14 = 0;    //turn light on
+                    __delay_ms(100);
+                    _LATB14 = 1;    //turn light on
+                    __delay_ms(100);
                 }
-                _LATB14 = 0;    //turn off trigger led
-                _LATA2 = 0; //turn off QRD LED
+                
                 state = scoring;
                 break;
                 
             case scoring:
                 
                 driveBackward();
-                decide();
+                turnRight90();
+                score();
+                turnLeft90();
                 driveForward();
                 
                 state = sorting;
